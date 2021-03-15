@@ -1,0 +1,14 @@
+- name: add users
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    state: present
+    groups: "{{ item.groups }}"
+    append: yes
+  loop: "{{ users_create }}"
+
+- name: add ssh public keys
+  ansible.posix.authorized_key:
+    user: "{{ item.name }}"
+    state: present
+    key: "{{ item.pubkey }}"
+  loop: "{{ users_create }}"

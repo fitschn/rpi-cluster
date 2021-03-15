@@ -1,0 +1,5 @@
+users_create:
+  - name: mathias
+    comment: "Mathias Nohr"
+    groups: sudo
+    pubkey: "{{ lookup('file', 'pubkeys/mathias.key') }}"

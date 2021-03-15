@@ -1,0 +1,17 @@
+- name: install dnsmasq
+  ansible.builtin.apt:
+    name: dnsmasq
+    state: present
+
+- name: create tftp root dir
+  ansible.builtin.file:
+    name: /var/lib/tftpboot
+    state: directory
+    mode: '0755'
+
+- name: ship dnsmasq conf
+  ansible.builtin.template:
+    src: dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
+    mode: '0444'
+  notify: restart dnsmasq

@@ -12,7 +12,6 @@ jobs:
       - uses: actions/checkout@master
         with:
           name: RPi-Distro/pi-gen
-          ref: refs/heads/release
 
       # Runs a single command using the runners shell
       - name: install dependencies

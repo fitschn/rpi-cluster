@@ -16,6 +16,9 @@ jobs:
         with:
           repository: RPi-Distro/pi-gen
           path: ./pi-gen
+        
+      - name: set version
+        run: echo "IMAGE_VERSION=$(date +'%Y.%m.%d').$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
           
       - name: make sure only the lite image is created (skip stages 3-5)
         run: |
@@ -31,5 +34,5 @@ jobs:
       - name: upload image
         uses: actions/upload-artifact@v2
         with:
-          name: raspberry_pi_os-lite-latest
+          name: raspberry_pi_os-lite-${{ env.IMAGE_VERSION }}
           path: ./pi-gen/work/*raspberry*/export-image/*-raspberry_pi_os-lite.img

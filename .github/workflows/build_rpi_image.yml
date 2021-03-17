@@ -8,11 +8,17 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-      # Checks-out pi-gen repo
+      - uses: actions/checkout@master
+        with:
+          path: ./rpi-k3s
+          
       - uses: actions/checkout@master
         with:
           repository: RPi-Distro/pi-gen
+          path: ./pi-gen
 
-      # Runs a single command using the runners shell
       - name: install dependencies
         run: sudo apt install coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc qemu-utils kpartx
+        
+      - name: build the image
+        run: cd ./pi-gen -c ../rpi-k3s/pi-gen/config

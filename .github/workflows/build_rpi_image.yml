@@ -27,3 +27,9 @@ jobs:
         
       - name: build the Raspbian OS Lite image
         run: cd ./pi-gen && sudo ./build.sh -c ../rpi-k3s/pi-gen/config
+        
+      - name: upload image
+        uses: actions/upload-artifact@v2
+        with:
+          name: raspberry_pi_os-lite-latest
+          path: ./pi-gen/work/*raspberry*/export-image/*-raspberry_pi_os-lite.img

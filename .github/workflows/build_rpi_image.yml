@@ -11,7 +11,7 @@ jobs:
       # Checks-out pi-gen repo
       - uses: actions/checkout@master
         with:
-          name: RPi-Distro/pi-gen
+          repository: RPi-Distro/pi-gen
 
       # Runs a single command using the runners shell
       - name: install dependencies

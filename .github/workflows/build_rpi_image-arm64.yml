@@ -1,4 +1,4 @@
-name: Build-RPi-Image
+name: Build-RPi-Image-64bit
 
 on:
   schedule:

@@ -11,17 +11,18 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
         with:
           path: ./rpi-k3s
           
-      - uses: actions/checkout@arm64
+      - uses: actions/checkout@v2
         with:
           repository: RPi-Distro/pi-gen
+          ref: arm64
           path: ./pi-gen
         
       - name: set version
-        run: echo "IMAGE_VERSION=$(date +'%Y.%m.%d').$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+        run: echo "IMAGE_VERSION=$(date +'%Y.%m.%d').$GITHUB_RUN_NUMBER.arm64" >> $GITHUB_ENV
           
       - name: make sure only the lite image is created (skip stages 3-5)
         run: |
@@ -36,5 +37,5 @@ jobs:
       - name: upload image
         uses: actions/upload-artifact@v2
         with:
-          name: raspberry_pi_os-lite-arm64-${{ env.IMAGE_VERSION }}
+          name: raspberry_pi_os-lite-${{ env.IMAGE_VERSION }}.img
           path: ./pi-gen/work/*raspberry*/export-image/*-raspberry_pi_os-lite.img

@@ -1,0 +1,40 @@
+name: Build-RPi-Image
+
+on:
+  schedule:
+    - cron:  '0 3 * * 4'
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@master
+        with:
+          path: ./rpi-k3s
+          
+      - uses: actions/checkout@arm64
+        with:
+          repository: RPi-Distro/pi-gen
+          path: ./pi-gen
+        
+      - name: set version
+        run: echo "IMAGE_VERSION=$(date +'%Y.%m.%d').$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+          
+      - name: make sure only the lite image is created (skip stages 3-5)
+        run: |
+          touch ./pi-gen/stage3/SKIP ./pi-gen/stage4/SKIP ./pi-gen/stage5/SKIP
+          touch ./pi-gen/stage4/SKIP_IMAGES ./pi-gen/stage5/SKIP_IMAGES
+      - name: install build dependencies
+        run: sudo apt install coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc qemu-utils kpartx
+        
+      - name: build the Raspbian OS Lite image
+        run: cd ./pi-gen && sudo ./build.sh -c ../rpi-k3s/pi-gen/config
+        
+      - name: upload image
+        uses: actions/upload-artifact@v2
+        with:
+          name: raspberry_pi_os-lite-arm64-${{ env.IMAGE_VERSION }}
+          path: ./pi-gen/work/*raspberry*/export-image/*-raspberry_pi_os-lite.img

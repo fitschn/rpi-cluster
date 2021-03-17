@@ -1,0 +1,11 @@
+export IMG_NAME="raspberry_pi_os"
+export LOCALE_DEFAULT="de_DE.UTF-8"
+export TARGET_HOSTNAME="rpi4-r01-sXX"
+export KEYBOARD_LAYOUT=German
+export KEYBOARD_KEYMAP=de
+export TIMEZONE_DEFAULT="Europe/Berlin"
+export FIRST_USER_NAME=mathias
+export FIRST_USER_PASS=
+export ENABLE_SSH=1
+export PUBKEY_ONLY_SSH=1
+export PUBKEY_SSH_FIRST_USER="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlXDyf+MnSS3HDxX7lzfXlpWlbpkOKpw2uVcVlU6lqgQZKtxfTcCjZG/UBJBQNp7QxQPEceWxl+GIfGisO7IYeBWJh0/JYGRQNDLAwLrdsoDPxiytyR6Yh31yFvz+vyhIOEo6eve5CMgfpqny2OxhoaT5tgiHN9QMZ8AWT6cMjcqL5wbuy5ZGYom0oExAPEw36YRSQf/Nmi0ZNcbCi+YU0HxSTDvZtxIYNv9oEBI5qMdHYcTccbCdEpP48HHYihbdC9sulbEoclM4+qfXmV5FNMeSAzPiXPUIzxUIwcq46zmPiQ1Hb6UdplOnrxzz63ZwplV0YFlmuOPtdPkaQ01/B mathias@mathias.local"

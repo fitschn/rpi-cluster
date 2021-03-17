@@ -21,4 +21,4 @@ jobs:
         run: sudo apt install coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc qemu-utils kpartx
         
       - name: build the image
-        run: cd ./pi-gen -c ../rpi-k3s/pi-gen/config
+        run: cd ./pi-gen && ./build.sh -c ../rpi-k3s/pi-gen/config

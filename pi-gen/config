@@ -4,7 +4,9 @@ export TARGET_HOSTNAME="rpi4-r01-sXX"
 export KEYBOARD_LAYOUT=German
 export KEYBOARD_KEYMAP=de
 export TIMEZONE_DEFAULT="Europe/Berlin"
-export FIRST_USER_NAME=mathias
+# we have to keep pi as user, because of sudoers config
+export FIRST_USER_NAME=pi
+# keep the default passwd - we will change it during first ansible run
 export FIRST_USER_PASS=
 export ENABLE_SSH=1
 export PUBKEY_ONLY_SSH=1

@@ -1,0 +1,6 @@
+---
+- name: bootstrap the base system
+  hosts: all
+  become: yes
+  roles:
+    - bootstrap-pi

@@ -1,8 +1,0 @@
-#{{ ansible_managed }}
-dhcp-range={{ ansible_default_ipv4.network }},proxy
-dhcp-boot=pxelinux.0,{{ ansible_default_ipv4.address }},{{ ansible_default_ipv4.network }}
-
-pxe-service=0,"Netboot Raspbian OS",pxelinux
-
-enable-tftp
-tftp-root=/var/lib/tftpboot

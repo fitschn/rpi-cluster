@@ -1,6 +1,0 @@
----
-- name: deploy netboot stuff
-  hosts: netboot
-  become: yes
-  roles:
-    - netboot

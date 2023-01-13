@@ -34,7 +34,7 @@ jobs:
         run: cd ./pi-gen && sudo ./build.sh -c ../rpi-k3s/pi-gen/config
         
       - name: upload image
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: raspberry_pi_os-lite-${{ env.IMAGE_VERSION }}.img
           path: ./pi-gen/work/*raspberry*/export-image/*-raspberry_pi_os-lite.img

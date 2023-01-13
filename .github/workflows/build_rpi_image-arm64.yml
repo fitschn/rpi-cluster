@@ -1,9 +1,6 @@
 name: Build-RPi-Image-64bit
 
 on:
-  schedule:
-    - cron:  '0 3 * * 4'
-
   workflow_dispatch:
 
 jobs:

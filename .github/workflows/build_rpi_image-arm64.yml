@@ -25,6 +25,8 @@ jobs:
         run: |
           touch ./pi-gen/stage3/SKIP ./pi-gen/stage4/SKIP ./pi-gen/stage5/SKIP
           touch ./pi-gen/stage4/SKIP_IMAGES ./pi-gen/stage5/SKIP_IMAGES
+      - name: hotfix for apt issue https://github.com/actions/runner-images/issues/675
+        run: sudo sed -i 's/azure\./<country-code>\./' /etc/apt/sources.list
       - name: install build dependencies
         run: sudo apt-get update && sudo apt-get install coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc qemu-utils kpartx gpg pigz
         

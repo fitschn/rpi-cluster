@@ -15,5 +15,8 @@ jobs:
       - name: install requirements
         run: pip3 install -r ansible/requirements.txt
 
+      - name: generate an empty vault password file
+        run: echo "not-a-password" > ansible/.vault.passwd
+
       - name: Run ansible-lint
         run: cd ansible && ansible-lint -vv

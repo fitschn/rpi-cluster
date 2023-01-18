@@ -1,2 +1,5 @@
 skip_list:
   - name[casing]
+
+exclude_paths:
+  - ../group_vars/all/secrets.yml

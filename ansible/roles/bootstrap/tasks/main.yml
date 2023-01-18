@@ -1,7 +1,7 @@
 - name: Configure users
   ansible.builtin.include_tasks: user.yml
 
-- name: Configure hostname
+- name: Configure hostname with dns
   ansible.builtin.include_tasks: hostname.yml
 
 - name: disable swap file

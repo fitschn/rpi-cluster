@@ -4,5 +4,8 @@
 - name: deploy CNI
   ansible.builtin.include_tasks: cni.yml
 
+- name: deploy crictl
+  ansible.builtin.include_tasks: crictl.yml
+
 - name: deploy nerdctl
   ansible.builtin.include_tasks: nerdctl.yml

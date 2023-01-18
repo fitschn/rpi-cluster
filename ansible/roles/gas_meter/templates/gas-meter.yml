@@ -1,0 +1,26 @@
+{{ ansible_managed | comment }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gas-meter
+  labels:
+    role: gas-meter
+spec:
+  hostNetwork: true
+  volumes:
+    - name: counter
+      hostPath:
+        path: /etc/gas-meter/gas_counter.txt
+    - name: dev-gpiomem
+      hostPath:
+        path: /dev/gpiomem
+  containers:
+    - name: gas-meter
+      image: ghcr.io/fitschn/gas-meter:{{ gas_meter_version }}
+      securityContext:
+        privileged: true
+      volumeMounts:
+        - mountPath: /opt/gas-meter/gas_counter.txt
+          name: counter
+        - mountPath: /dev/gpiomem
+          name: dev-gpiomem

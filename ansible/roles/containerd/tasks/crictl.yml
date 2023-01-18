@@ -1,0 +1,32 @@
+- name: check current crictl version
+  ansible.builtin.command:
+    cmd: /usr/local/bin/crictl --version
+  register: cur_crictl_version
+  ignore_errors: true
+  changed_when: false
+
+- name: download crictl
+  ansible.builtin.get_url:
+    url: "{{ crictl_dl_url }}"
+    dest: "/tmp/crictl-{{ crictl_version }}.tar.gz"
+    checksum: "sha256:{{ crictl_sha256[custom_arch] }}"
+    mode: 0444
+  notify: remove crictl download
+  when: cur_crictl_version.failed or not crictl_version in cur_crictl_version.stdout
+
+- name: deploy crictl if necessary
+  ansible.builtin.unarchive:
+    src: "/tmp/crictl-{{ crictl_version }}.tar.gz"
+    dest: /usr/local/bin/
+    remote_src: true
+    owner: root
+    group: root
+    mode: 0555
+  when: cur_crictl_version.failed or not crictl_version in cur_crictl_version.stdout
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: ship crictl config
+  ansible.builtin.template:
+    src: crictl.yaml
+    dest: /etc/crictl.yaml
+    mode: 0444

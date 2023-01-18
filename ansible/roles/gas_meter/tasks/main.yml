@@ -1,0 +1,39 @@
+- name: create config dir
+  ansible.builtin.file:
+    state: directory
+    path: /etc/gas-meter
+    owner: root
+    group: root
+    mode: 0755
+
+- name: check, if we already have a counter
+  ansible.builtin.stat:
+    path: /etc/gas-meter/gas_counter.txt
+  register: counter_file
+
+- name: intialize counter, when file doesn't exist
+  ansible.builtin.copy:
+    content: '{{ gas_counter_start }}'
+    dest: /etc/gas-meter/gas_counter.txt
+    mode: 0644
+    owner: root
+    group: root
+  when: not counter_file.stat.exists
+
+- name: deploy container manifest
+  ansible.builtin.template:
+    src: gas-meter.yml
+    dest: /opt/kubelet/manifests/gas-meter.yml
+    owner: root
+    group: root
+    mode: 0444
+
+- name: wait for container to come up
+  ansible.builtin.command:
+    cmd: crictl ps -q --name gas-meter
+  register: gas_meter_container
+  until: gas_meter_container.stdout != ""
+  delay: 5
+  retries: 60
+  changed_when: false
+  when: not ansible_check_mode

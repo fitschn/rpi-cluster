@@ -1,0 +1,34 @@
+- name: create config dir
+  ansible.builtin.file:
+    state: directory
+    path: /opt/unifi-controller/config
+    owner: 911
+    group: 911
+    mode: 0755
+
+- name: deploy container manifest
+  ansible.builtin.template:
+    src: unifi-controller.yml
+    dest: /opt/kubelet/manifests/unifi-controller.yml
+    owner: root
+    group: root
+    mode: 0444
+
+- name: wait for container to come up
+  ansible.builtin.command:
+    cmd: crictl ps -q --name unifi-controller
+  register: unifi_controller_container
+  until: unifi_controller_container.stdout != ""
+  delay: 5
+  retries: 60
+  changed_when: false
+  when: not ansible_check_mode
+
+- name: create/update dns entry
+  community.general.cloudflare_dns:
+    zone: ohr-mit-n.net
+    record: unifi
+    type: A
+    value: "{{ ansible_host }}"
+    solo: true
+    api_token: "{{ cloudflare_api_token }}"

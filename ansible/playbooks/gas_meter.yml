@@ -1,0 +1,6 @@
+---
+- name: Install gas-meter
+  hosts: pi4-r01-gas
+  become: true
+  roles:
+    - gas_meter

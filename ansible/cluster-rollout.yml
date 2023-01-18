@@ -1,3 +1,5 @@
 - import_playbook: playbooks/bootstrap.yml
 - import_playbook: playbooks/containerd.yml
 - import_playbook: playbooks/kubelet.yml
+- import_playbook: playbooks/gas_meter.yml
+- import_playbook: playbooks/unifi_controller.yml

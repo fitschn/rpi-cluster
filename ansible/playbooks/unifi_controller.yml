@@ -1,0 +1,6 @@
+---
+- name: Deploy unifi controller
+  hosts: pi4-r01-s02
+  become: true
+  roles:
+    - unifi_controller

@@ -8,3 +8,8 @@
   ansible.builtin.file:
     path: "/tmp/nerdctl-{{ nerdctl_version }}.tar.gz"
     state: absent
+
+- name: remove crictl download
+  ansible.builtin.file:
+    path: "/tmp/crictl-{{ crictl_version }}.tar.gz"
+    state: absent

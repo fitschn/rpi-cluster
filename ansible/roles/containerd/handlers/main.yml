@@ -1,0 +1,10 @@
+- name: restart containerd
+  ansible.builtin.systemd:
+    name: containerd
+    state: restarted
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: remove nerdctl download
+  ansible.builtin.file:
+    path: "/tmp/nerdctl-{{ nerdctl_version }}.tar.gz"
+    state: absent

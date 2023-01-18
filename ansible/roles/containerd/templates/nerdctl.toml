@@ -1,0 +1,7 @@
+{{ ansible_managed | comment }}
+debug = false
+debug_full = false
+namespace = "k8s.gcr.io"
+address = "unix:///run/containerd/containerd.sock"
+cgroup_manager = "systemd"
+hosts_dir = ["/etc/containerd/certs.d"]

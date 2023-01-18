@@ -1,0 +1,8 @@
+- name: install and configure containerd
+  ansible.builtin.include_tasks: containerd.yml
+
+- name: deploy CNI
+  ansible.builtin.include_tasks: cni.yml
+
+- name: deploy nerdctl
+  ansible.builtin.include_tasks: nerdctl.yml

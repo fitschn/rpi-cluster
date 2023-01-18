@@ -1,0 +1,24 @@
+- name: Add users
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    state: present
+    groups: "{{ item.groups }}"
+    append: true
+  loop: "{{ users_create }}"
+
+- name: Add ssh public keys
+  ansible.posix.authorized_key:
+    user: "{{ item.name }}"
+    state: present
+    key: "{{ item.pubkey }}"
+  loop: "{{ users_create }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Ship global sudoers config
+  ansible.builtin.template:
+    src: sudoers
+    dest: /etc/sudoers
+    mode: 0440
+    owner: root
+    group: root
+    validate: visudo -cf %s

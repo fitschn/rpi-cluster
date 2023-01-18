@@ -1,0 +1,1 @@
+custom_arch: "{{ (ansible_architecture == 'aarch64') | ternary('arm64', 'amd64') }}"

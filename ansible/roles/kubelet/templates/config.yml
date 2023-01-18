@@ -1,0 +1,91 @@
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+enableServer: true
+staticPodPath: "/opt/kubelet/manifests"
+syncFrequency: 1m0s
+fileCheckFrequency: 20s
+httpCheckFrequency: 20s
+address: "::1"
+port: 10250
+readOnlyPort: 10255
+authentication:
+  x509: {}
+  webhook:
+    enabled: false
+    cacheTTL: 2m0s
+  anonymous:
+    enabled: true
+authorization:
+  mode: AlwaysAllow
+  webhook:
+    cacheAuthorizedTTL: 5m0s
+    cacheUnauthorizedTTL: 30s
+registryPullQPS: 5
+registryBurst: 10
+eventRecordQPS: 5
+eventBurst: 10
+enableDebuggingHandlers: true
+healthzPort: 10248
+healthzBindAddress: "::1"
+oomScoreAdj: -999
+streamingConnectionIdleTimeout: 4h0m0s
+nodeStatusUpdateFrequency: 10s
+nodeStatusReportFrequency: 5m0s
+nodeLeaseDurationSeconds: 40
+imageMinimumGCAge: 2m0s
+imageGCHighThresholdPercent: 85
+imageGCLowThresholdPercent: 80
+volumeStatsAggPeriod: 1m0s
+cgroupsPerQOS: true
+cgroupDriver: systemd
+cpuManagerPolicy: none
+cpuManagerReconcilePeriod: 10s
+memoryManagerPolicy: None
+topologyManagerPolicy: none
+topologyManagerScope: container
+runtimeRequestTimeout: 2m0s
+hairpinMode: promiscuous-bridge
+maxPods: 110
+podPidsLimit: -1
+resolvConf: "/etc/resolv.conf"
+cpuCFSQuota: true
+cpuCFSQuotaPeriod: 100ms
+nodeStatusMaxImages: 50
+maxOpenFiles: 1000000
+contentType: application/vnd.kubernetes.protobuf
+kubeAPIQPS: 5
+kubeAPIBurst: 10
+serializeImagePulls: true
+evictionHard:
+  imagefs.available: 15%
+  memory.available: 100Mi
+  nodefs.available: 10%
+  nodefs.inodesFree: 5%
+evictionPressureTransitionPeriod: 5m0s
+enableControllerAttachDetach: true
+makeIPTablesUtilChains: false
+iptablesMasqueradeBit: 14
+iptablesDropBit: 15
+failSwapOn: true
+memorySwap: {}
+containerLogMaxSize: 10Mi
+containerLogMaxFiles: 5
+configMapAndSecretChangeDetectionStrategy: Watch
+enforceNodeAllocatable:
+- pods
+volumePluginDir: "/usr/libexec/kubernetes/kubelet-plugins/volume/exec/"
+logging:
+  format: text
+  flushFrequency: 5000000000
+  verbosity: 0
+  options:
+    json:
+      infoBufferSize: '0'
+enableSystemLogHandler: true
+shutdownGracePeriod: 0s
+shutdownGracePeriodCriticalPods: 0s
+enableProfilingHandler: true
+enableDebugFlagsHandler: true
+seccompDefault: false
+memoryThrottlingFactor: 0.8
+registerNode: true

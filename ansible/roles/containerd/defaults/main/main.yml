@@ -1,0 +1,5 @@
+nerdctl_version: 1.1.0
+nerdctl_dl_url: https://github.com/containerd/nerdctl/releases/download/v{{ nerdctl_version }}/nerdctl-{{ nerdctl_version }}-linux-{{ custom_arch }}.tar.gz
+nerdctl_sha256:
+  amd64: fcfd36b0b9441541aab0793c0f586599e6d774781c74f16468a3300026120c0e
+  arm64: a0b57b39341b9d67a3f0ae74e19985c72e930bad14291cbbd8479ed6a6a64e83

@@ -1,0 +1,6 @@
+---
+- name: Install containerd
+  hosts: all
+  become: true
+  roles:
+    - kubelet

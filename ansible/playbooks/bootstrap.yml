@@ -1,0 +1,6 @@
+---
+- name: Bootstrap the base system
+  hosts: all
+  become: true
+  roles:
+    - bootstrap

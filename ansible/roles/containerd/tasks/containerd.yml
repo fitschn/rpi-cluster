@@ -1,0 +1,30 @@
+- name: add key for docker repository (for containerd packages)
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
+    state: present
+
+- name: add docker repo (for containerd packages)
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ custom_arch }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+    state: present
+
+- name: update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: install containerd
+  ansible.builtin.apt:
+    name: containerd.io
+
+- name: create config directory
+  ansible.builtin.file:
+    name: /etc/containerd
+    state: directory
+    mode: 0555
+
+- name: ship config
+  ansible.builtin.template:
+    src: config.toml
+    dest: /etc/containerd/config.toml
+    mode: 0440
+  notify: restart containerd

@@ -1,0 +1,17 @@
+{{ ansible_managed | comment }}
+[Unit]
+Description=Kubernetes Kubelet
+Documentation=https://github.com/kubernetes/kubernetes
+StartLimitBurst=5
+StartLimitIntervalSec=60
+
+[Service]
+ExecStart=/opt/kubelet/kubelet \
+  --container-runtime-endpoint unix:///run/containerd/containerd.sock \
+  --node-ip "::" \
+  --config /etc/kubelet/config.yml
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,4 @@
+kubelet_version: v1.26.0
+# Download source: https://www.downloadkubernetes.com
+kubelet_dl_url: "https://dl.k8s.io/{{ kubelet_version }}/bin/linux/{{ custom_arch }}/kubelet"
+kubelet_sha256: "sha256:https://dl.k8s.io/{{ kubelet_version }}/bin/linux/{{ custom_arch }}/kubelet.sha256"

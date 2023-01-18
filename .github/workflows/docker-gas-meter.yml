@@ -1,4 +1,4 @@
-name: Build
+name: Build container for gas-meter
 
 on:
   workflow_dispatch:

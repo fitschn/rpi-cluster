@@ -1,7 +1,6 @@
 FROM python:3.9-bullseye
 
-RUN apt-get update && apt-get install -y python3-rpi.gpio && \
-  rm -rf /var/lib/apt/lists/*
+RUN python -m pip install rpi.gpio
 
 RUN mkdir -p /opt/gas-meter
 
@@ -10,4 +9,4 @@ COPY gas_counter.txt /opt/gas-meter/gas_counter.txt
 
 WORKDIR /opt/gas-meter
 
-ENTRYPOINT ["python3 gas-meter.py"]
+ENTRYPOINT ["python3 gas_meter.py"]

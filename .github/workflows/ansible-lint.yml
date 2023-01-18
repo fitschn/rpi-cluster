@@ -1,0 +1,19 @@
+name: Ansible Lint
+on: [push, pull_request]
+
+jobs:
+  run-ansible-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+
+      - name: install requirements
+        run: pip3 install -r ansible/requirements.txt
+
+      - name: Run ansible-lint
+        run: cd ansible && ansible-lint -vv

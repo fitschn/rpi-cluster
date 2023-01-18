@@ -9,4 +9,4 @@ COPY gas_counter.txt /opt/gas-meter/gas_counter.txt
 
 WORKDIR /opt/gas-meter
 
-ENTRYPOINT ["python3 gas_meter.py"]
+ENTRYPOINT ["python3", "gas_meter.py"]

@@ -1,0 +1,27 @@
+- name: copy script
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/opt/node-exporter/{{ item }}"
+    mode: 0755
+    owner: node-exporter
+    group: node-exporter
+  loop:
+    - tfc-meter-reading.sh
+
+- name: copy systemd services
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+    mode: 0444
+  loop:
+    - tfc-meter-reading.service
+    - tfc-meter-reading.timer
+
+- name: enable systemd timer
+  ansible.builtin.systemd:
+    name: tfc-meter-reading.timer
+    state: started
+    enabled: true
+    daemon_reload: true

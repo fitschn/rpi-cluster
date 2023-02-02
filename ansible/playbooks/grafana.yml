@@ -1,0 +1,6 @@
+---
+- name: Deploy grafana
+  hosts: pi4-r01-s04
+  become: true
+  roles:
+    - grafana

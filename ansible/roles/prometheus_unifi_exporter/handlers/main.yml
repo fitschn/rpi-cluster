@@ -1,0 +1,16 @@
+- name: restart unifi-exporter
+  ansible.builtin.shell:
+    cmd: |
+      crictl stop $(crictl ps --name unifi-exporter -q) && \
+      crictl rm $(crictl ps -a --name unifi-exporter -q)
+  notify: wait for unifi-exporter
+
+- name: wait for unifi-exporter
+  ansible.builtin.command:
+    cmd: crictl ps -q --name unifi-exporter
+  register: unifi_exporter_container
+  until: unifi_exporter_container.stdout != ""
+  delay: 10
+  retries: 18
+  changed_when: false
+  when: not ansible_check_mode

@@ -1,0 +1,4 @@
+{{ ansible_managed | comment }}
+# HELP machine_info_hostname ansible generated metric for inventory_hostname
+# TYPE machine_info_hostname gauge
+machine_info_hostname{hostname="{{ inventory_hostname }}",inventory_hostname="{{ inventory_hostname }}"} 1

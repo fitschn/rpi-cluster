@@ -1,0 +1,48 @@
+{{ ansible_managed | comment }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: node-exporter
+  labels:
+    role: node-exporter
+spec:
+  hostNetwork: true
+  hostPID: true
+  volumes:
+    - name: root
+      hostPath:
+        readOnly: true
+        path: /
+    - name: run-dbus
+      hostPath:
+        path: /var/run/dbus
+  containers:
+    - name: node-exporter
+      securityContext:
+        capabilities:
+          add:
+            - SYS_TIME
+      image: quay.io/prometheus/node-exporter:{{ node_exporter_version }}
+      args:
+        - --path.rootfs=/host
+        - --path.procfs=/host/proc
+        - --path.sysfs=/host/sys
+        - --web.listen-address={{ ansible_host }}:9100
+        - --collector.ntp.protocol-version=4
+        - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|run)($|/)
+        - --collector.textfile.directory=/host/opt/node-exporter/textfile-collector
+{% for collector in	node_exporter_collectors_enabled | sort	%}
+        - --collector.{{collector}}
+{% endfor %}
+{% for collector in node_exporter_collectors_disabled | sort %}
+        - --no-collector.{{collector}}
+{% endfor %}
+        - --log.level=warn
+      volumeMounts:
+        - mountPath: /host
+          name: root
+        - mountPath: /var/run/dbus
+          name: run-dbus
+      securityContext:
+        runAsUser: 205
+        runAsGroup: 205

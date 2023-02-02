@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+[Unit]
+Description=Get current reading of our meters
+
+[Service]
+User=node-exporter
+Group=node-exporter
+Type=oneshot
+ExecStart=/opt/node-exporter/tfc-wrapper.sh \
+    -i "/opt/node-exporter/tfc-meter-reading.sh" \
+    -o "meter-readings.prom"

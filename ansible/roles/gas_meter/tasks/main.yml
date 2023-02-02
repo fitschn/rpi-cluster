@@ -20,6 +20,14 @@
     group: root
   when: not counter_file.stat.exists
 
+- name: Deploy info about gas meter id
+  ansible.builtin.copy:
+    content: '{{ gas_meter_id }}'
+    dest: /etc/gas-meter/id
+    mode: 0644
+    owner: root
+    group: root
+
 - name: deploy container manifest
   ansible.builtin.template:
     src: gas-meter.yml

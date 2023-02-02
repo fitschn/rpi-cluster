@@ -1,0 +1,13 @@
+groups:
+  - name: node_exporter.rules
+    rules:
+      - alert: SystemdServiceFailedState
+        expr: node_systemd_unit_state{state="failed"} == 1
+        for: 5m
+        labels:
+          severity: P3
+          service: node_exporter
+        annotations:
+          summary: "systemd service in failure state"
+          description: "service `{{ $labels.name }}` in failure state; checked by \
+            `{{ $labels.job }}` on `{{ $labels.instance | stripDomain | stripPort | toUpper }}`"

@@ -1,0 +1,5 @@
+grafana_version: 9.3.2
+
+grafana_ds_prometheus:
+  - name: 'Prometheus'
+    url: 'http://prometheus.ohr-mit-n.net:9090'

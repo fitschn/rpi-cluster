@@ -1,0 +1,19 @@
+{{ ansible_managed | comment }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unifi-exporter
+  labels:
+    role: unifi-exporter
+spec:
+  hostNetwork: true
+  volumes:
+    - name: config
+      hostPath:
+        path: /etc/unifi-exporter/unpoller.toml
+  containers:
+    - name: unifi-exporter
+      image: ghcr.io/unpoller/unpoller:{{ unifi_exporter_version }}
+      volumeMounts:
+        - mountPath: /etc/unpoller/up.conf
+          name: config

@@ -1,0 +1,6 @@
+---
+- name: Deploy unifi exporter
+  hosts: pi4-r01-s02
+  become: true
+  roles:
+    - prometheus_unifi_exporter

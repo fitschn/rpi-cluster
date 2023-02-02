@@ -1,0 +1,35 @@
+{{ ansible_managed | comment }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: prometheus
+  labels:
+    role: prometheus
+spec:
+  hostNetwork: true
+  volumes:
+    - name: prometheus-config
+      hostPath:
+        path: /etc/prometheus
+    - name: prometheus-data
+      hostPath:
+        path: /opt/prometheus/data
+  containers:
+    - name: prometheus
+      image: quay.io/prometheus/prometheus:{{ prometheus_version }}
+      args:
+        - --config.file=/etc/prometheus/prometheus.yml
+        - --log.level=info
+        - --storage.tsdb.path=/prometheus
+        - --storage.tsdb.retention.time=365d
+        - --web.console.libraries=/usr/share/prometheus/console_libraries
+        - --web.console.templates=/usr/share/prometheus/consoles
+        - --web.listen-address={{ ansible_host }}:9090
+      volumeMounts:
+        - mountPath: /etc/prometheus
+          name: prometheus-config
+        - mountPath: /prometheus
+          name: prometheus-data
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0

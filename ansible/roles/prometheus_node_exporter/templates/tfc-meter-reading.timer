@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+[Unit]
+Description=Timer to get current reading of our meters
+
+[Timer]
+OnCalendar=*:*:0/15
+
+[Install]
+WantedBy=timers.target

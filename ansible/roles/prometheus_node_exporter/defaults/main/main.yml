@@ -1,0 +1,17 @@
+node_exporter_version: v1.5.0
+
+# only enable modules that are not enabled by default
+node_exporter_collectors_enabled:
+  - ntp
+  - systemd
+
+# disable modules that are enabled by default but useless
+node_exporter_collectors_disabled:
+  - bcache
+  - bonding
+  - fibrechannel
+  - infiniband
+  - mdadm
+  - nfs
+  - nfsd
+  - tapestats

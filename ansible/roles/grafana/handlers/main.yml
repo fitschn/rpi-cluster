@@ -1,0 +1,14 @@
+- name: restart grafana
+  ansible.builtin.shell:
+    cmd: crictl stop $(crictl ps --name grafana -q) && crictl rm $(crictl ps -a --name grafana -q)
+  notify: wait for grafana
+
+- name: wait for grafana
+  ansible.builtin.command:
+    cmd: crictl ps -q --name grafana
+  register: grafana_container
+  until: grafana_container.stdout != ""
+  delay: 10
+  retries: 18
+  changed_when: false
+  when: not ansible_check_mode

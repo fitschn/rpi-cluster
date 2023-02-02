@@ -1,0 +1,56 @@
+# still needed for textfile collectors
+- name: make sure, node-exporter user exists
+  ansible.builtin.user:
+    name: node-exporter
+    shell: /usr/sbin/nologin
+    home: /opt/node-exporter
+    create_home: true
+    uid: 205
+    system: true
+
+- name: create dir for textfile collector
+  ansible.builtin.file:
+    path: /opt/node-exporter/textfile-collector
+    state: directory
+    owner: 205
+    group: 205
+    mode: 0755
+
+- name: deploy extended attributes for node-exporter
+  ansible.builtin.template:
+    src: node-attributes.prom
+    dest: /opt/node-exporter/textfile-collector/node-attributes.prom
+    owner: 205
+    group: 205
+    mode: 0444
+
+- name: deploy container manifest
+  ansible.builtin.template:
+    src: node-exporter.yml
+    dest: /opt/kubelet/manifests/node-exporter.yml
+    owner: root
+    group: root
+    mode: 0444
+
+- name: wait for container to come up
+  ansible.builtin.command:
+    cmd: crictl ps -q --name node-exporter
+  register: node_exporter_container
+  until: node_exporter_container.stdout != ""
+  delay: 10
+  retries: 100
+  changed_when: false
+  when: not ansible_check_mode
+
+- name: copy textfile collector wrapper
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/opt/node-exporter/{{ item }}"
+    mode: 0755
+    owner: node-exporter
+    group: node-exporter
+  loop:
+    - tfc-wrapper.sh
+
+- name: deploy textfile-collectors
+  ansible.builtin.include_tasks: tfc/main.yml

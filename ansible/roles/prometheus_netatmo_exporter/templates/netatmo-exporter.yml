@@ -1,0 +1,33 @@
+{{ ansible_managed | comment }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: netatmo-exporter
+  labels:
+    role: netatmo-exporter
+spec:
+  hostNetwork: true
+  volumes:
+    - name: netatmo-exporter-config
+      hostPath:
+        path: /etc/netatmo-exporter
+  containers:
+    - name: netatmo-exporter
+      image: ghcr.io/xperimental/netatmo-exporter:{{ netatmo_exporter_version }}
+      env:
+        - name: NETATMO_EXPORTER_ADDR
+          value: "{{ ansible_host }}:9210"
+        - name: NETATMO_CLIENT_ID
+          value: "{{ netatmo_client_id }}"
+        - name: NETATMO_CLIENT_SECRET
+          value: "{{ netatmo_client_secret }}"
+        - name: NETATMO_EXPORTER_EXTERNAL_URL
+          value: "http://{{ ansible_host }}:9210"
+        - name: NETATMO_EXPORTER_TOKEN_FILE
+          value: "/etc/netatmo-exporter/token.json"
+      volumeMounts:
+        - mountPath: /etc/netatmo-exporter
+          name: netatmo-exporter-config
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0

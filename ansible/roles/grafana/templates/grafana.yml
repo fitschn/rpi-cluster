@@ -1,0 +1,24 @@
+{{ ansible_managed | comment }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grafana
+  labels:
+    role: grafana
+spec:
+  hostNetwork: true
+  volumes:
+    - name: grafana-config
+      hostPath:
+        path: /etc/grafana
+    - name: grafana-data
+      hostPath:
+        path: /opt/grafana
+  containers:
+    - name: grafana
+      image: grafana/grafana-oss:{{ grafana_version }}
+      volumeMounts:
+        - mountPath: /etc/grafana
+          name: grafana-config
+        - mountPath: /var/lib/grafana
+          name: grafana-data

@@ -2,7 +2,7 @@
   ansible.builtin.template:
     src: hosts
     dest: /etc/hosts
-    mode: 0444
+    mode: "0444"
 
 - name: Set hostname
   ansible.builtin.hostname:

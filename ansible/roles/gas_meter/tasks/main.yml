@@ -4,7 +4,7 @@
     path: /etc/gas-meter
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
 
 - name: check, if we already have a counter
   ansible.builtin.stat:
@@ -15,7 +15,7 @@
   ansible.builtin.copy:
     content: '{{ gas_counter_start }}'
     dest: /etc/gas-meter/gas_counter.txt
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
   when: not counter_file.stat.exists
@@ -24,7 +24,7 @@
   ansible.builtin.copy:
     content: '{{ gas_meter_id }}'
     dest: /etc/gas-meter/id
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
 
@@ -34,7 +34,7 @@
     dest: /opt/kubelet/manifests/gas-meter.yml
     owner: root
     group: root
-    mode: 0444
+    mode: "0444"
 
 - name: wait for container to come up
   ansible.builtin.command:

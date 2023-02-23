@@ -40,7 +40,7 @@
   ansible.builtin.copy:
     src: provisioning/dashboards/
     dest: /etc/grafana/provisioning/dashboards/
-    mode: 0440
+    mode: "0440"
     owner: 472
     group: 472
   notify: restart grafana
@@ -49,8 +49,8 @@
   ansible.builtin.copy:
     src: dashboards/
     dest: /opt/grafana/dashboards/
-    mode: 0440
-    directory_mode: 0770
+    mode: "0440"
+    directory_mode: "0770"
     owner: 472
     group: 472
 
@@ -60,7 +60,7 @@
     dest: /opt/kubelet/manifests/grafana.yml
     owner: root
     group: root
-    mode: 0444
+    mode: "0444"
 
 - name: wait for container to come up
   ansible.builtin.command:
@@ -82,9 +82,9 @@
     api_token: "{{ cloudflare_api_token }}"
 
 # It has to be done manually
-#- name: Install grafana windrose plugin
-#  community.grafana.grafana_plugin:
-#    name: fatcloud-windrose-panel
-#    version: latest
-#    state: present
-#    grafana_plugins_dir: /opt/grafana/plugins
+# - name: Install grafana windrose plugin
+#   community.grafana.grafana_plugin:
+#     name: fatcloud-windrose-panel
+#     version: latest
+#     state: present
+#     grafana_plugins_dir: /opt/grafana/plugins

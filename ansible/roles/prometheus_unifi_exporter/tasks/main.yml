@@ -4,13 +4,13 @@
     path: /etc/unifi-exporter
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
 
 - name: deploy config file
   ansible.builtin.template:
     src: unpoller.toml
     dest: /etc/unifi-exporter/unpoller.toml
-    mode: 0640
+    mode: "0640"
     owner: root
     group: root
   notify: restart unifi-exporter
@@ -21,7 +21,7 @@
     dest: /opt/kubelet/manifests/unifi-exporter.yml
     owner: root
     group: root
-    mode: 0444
+    mode: "0444"
 
 - name: wait for container to come up
   ansible.builtin.command:

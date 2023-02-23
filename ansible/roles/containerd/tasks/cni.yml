@@ -7,11 +7,11 @@
   ansible.builtin.file:
     path: /etc/cni/net.d
     state: directory
-    mode: 0755
+    mode: "0755"
 
 # No service reload necessary - containerd will load it automatically
 - name: ship dummy plugin config to make containerd and kubelet happy
   ansible.builtin.template:
     src: 99-dummy.conf
     dest: /etc/cni/net.d/99-dummy.conf
-    mode: 0444
+    mode: "0444"

@@ -2,7 +2,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0755
+    mode: "0755"
   loop:
     - /etc/kubelet
     - /opt/kubelet
@@ -20,7 +20,7 @@
     url: "{{ kubelet_dl_url }}"
     dest: "/opt/kubelet/kubelet"
     checksum: "{{ kubelet_sha256 }}"
-    mode: 0555
+    mode: "0555"
   when: cur_kubelet_version.failed or not kubelet_version in cur_kubelet_version.stdout
   ignore_errors: "{{ ansible_check_mode }}"
 
@@ -28,14 +28,14 @@
   ansible.builtin.template:
     src: config.yml
     dest: /etc/kubelet/config.yml
-    mode: 0444
+    mode: "0444"
   notify: restart kubelet
 
 - name: ship kubelet systemd unit
   ansible.builtin.template:
     src: kubelet.service
     dest: /etc/systemd/system/kubelet.service
-    mode: 0444
+    mode: "0444"
   notify: restart kubelet
 
 - name: enable kubelet service

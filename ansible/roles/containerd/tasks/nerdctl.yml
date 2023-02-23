@@ -10,7 +10,7 @@
     url: "{{ nerdctl_dl_url }}"
     dest: "/tmp/nerdctl-{{ nerdctl_version }}.tar.gz"
     checksum: "sha256:{{ nerdctl_sha256[custom_arch] }}"
-    mode: 0444
+    mode: "0444"
   notify: remove nerdctl download
   when: cur_nerdctl_version.failed or not nerdctl_version in cur_nerdctl_version.stdout
 
@@ -21,7 +21,7 @@
     remote_src: true
     owner: root
     group: root
-    mode: 0555
+    mode: "0555"
   when: cur_nerdctl_version.failed or not nerdctl_version in cur_nerdctl_version.stdout
   ignore_errors: "{{ ansible_check_mode }}"
 
@@ -31,11 +31,11 @@
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
 
 - name: ship nerdctl config
   ansible.builtin.template:
     src: nerdctl.toml
     dest: /etc/nerdctl/nerdctl.toml
-    mode: 0444
+    mode: "0444"
   ignore_errors: "{{ ansible_check_mode }}"

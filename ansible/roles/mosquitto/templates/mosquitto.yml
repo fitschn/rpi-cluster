@@ -1,0 +1,27 @@
+{{ ansible_managed | comment }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mosquitto
+  labels:
+    role: mosquitto
+spec:
+  hostNetwork: true
+  volumes:
+    - name: mosquitto-config
+      hostPath:
+        path: /etc/mosquitto
+    - name: mosquitto-data
+      hostPath:
+        path: /opt/mosquitto/data
+  containers:
+    - name: mosquitto
+      image: eclipse-mosquitto:{{ mosquitto_version }}
+      volumeMounts:
+        - mountPath: /mosquitto/config
+          name: mosquitto-config
+        - mountPath: /mosquitto/data
+          name: mosquitto-data
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0

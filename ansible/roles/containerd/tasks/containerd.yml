@@ -20,11 +20,11 @@
   ansible.builtin.file:
     name: /etc/containerd
     state: directory
-    mode: 0555
+    mode: "0555"
 
 - name: ship config
   ansible.builtin.template:
     src: config.toml
     dest: /etc/containerd/config.toml
-    mode: 0440
+    mode: "0440"
   notify: restart containerd

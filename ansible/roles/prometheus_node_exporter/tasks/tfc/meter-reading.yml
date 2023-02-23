@@ -2,7 +2,7 @@
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "/opt/node-exporter/{{ item }}"
-    mode: 0755
+    mode: "0755"
     owner: node-exporter
     group: node-exporter
   loop:
@@ -14,7 +14,7 @@
     dest: "/etc/systemd/system/{{ item }}"
     owner: root
     group: root
-    mode: 0444
+    mode: "0444"
   loop:
     - tfc-meter-reading.service
     - tfc-meter-reading.timer

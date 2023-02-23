@@ -37,7 +37,7 @@
     dest: /opt/kubelet/manifests/prometheus.yml
     owner: root
     group: root
-    mode: 0444
+    mode: "0444"
 
 - name: wait for container to come up
   ansible.builtin.command:

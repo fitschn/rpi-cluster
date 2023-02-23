@@ -4,7 +4,7 @@
     dest: /opt/kubelet/manifests/netatmo-exporter.yml
     owner: root
     group: root
-    mode: 0440
+    mode: "0440"
 
 - name: wait for container to come up
   ansible.builtin.command:

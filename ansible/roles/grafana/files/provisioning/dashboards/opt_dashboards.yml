@@ -1,12 +1,12 @@
 apiVersion: 1
 
 providers:
-- name: '/var/lib/grafana/dashboards'
-  orgId: 1
-  type: file
-  disableDeletion: false
-  editable: false
-  updateIntervalSeconds: 30
-  options:
-    path: '/var/lib/grafana/dashboards'
-    foldersFromFilesStructure: true
+  - name: '/var/lib/grafana/dashboards'
+    orgId: 1
+    type: file
+    disableDeletion: false
+    editable: false
+    updateIntervalSeconds: 30
+    options:
+      path: '/var/lib/grafana/dashboards'
+      foldersFromFilesStructure: true

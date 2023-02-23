@@ -10,7 +10,7 @@
     url: "{{ crictl_dl_url }}"
     dest: "/tmp/crictl-{{ crictl_version }}.tar.gz"
     checksum: "sha256:{{ crictl_sha256[custom_arch] }}"
-    mode: 0444
+    mode: "0444"
   notify: remove crictl download
   when: cur_crictl_version.failed or not crictl_version in cur_crictl_version.stdout
 
@@ -21,7 +21,7 @@
     remote_src: true
     owner: root
     group: root
-    mode: 0555
+    mode: "0555"
   when: cur_crictl_version.failed or not crictl_version in cur_crictl_version.stdout
   ignore_errors: "{{ ansible_check_mode }}"
 
@@ -29,4 +29,4 @@
   ansible.builtin.template:
     src: crictl.yaml
     dest: /etc/crictl.yaml
-    mode: 0444
+    mode: "0444"

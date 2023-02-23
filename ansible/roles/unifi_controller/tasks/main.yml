@@ -4,7 +4,7 @@
     path: /opt/unifi-controller/config
     owner: 911
     group: 911
-    mode: 0755
+    mode: "0755"
 
 - name: deploy container manifest
   ansible.builtin.template:
@@ -12,7 +12,7 @@
     dest: /opt/kubelet/manifests/unifi-controller.yml
     owner: root
     group: root
-    mode: 0444
+    mode: "0444"
 
 - name: wait for container to come up
   ansible.builtin.command:

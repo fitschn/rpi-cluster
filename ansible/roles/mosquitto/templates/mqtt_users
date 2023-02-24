@@ -1,5 +1,5 @@
 # {{ ansible_managed }}
 
-{% for item in mqtt_accounts %}
-{{ item.username }}:{{ item.password | password_hash('pbkdf2_sha512', item.salt) | replace('$pbkdf2-sha512$', '$7$') | replace('.', '+') }}==
+{% for account in mqtt_accounts %}
+{{ mqtt_accounts[account].username }}:{{ mqtt_accounts[account].password | password_hash('pbkdf2_sha512',  mqtt_accounts[account].salt) | replace('$pbkdf2-sha512$', '$7$') | replace('.', '+') }}==
 {% endfor %}

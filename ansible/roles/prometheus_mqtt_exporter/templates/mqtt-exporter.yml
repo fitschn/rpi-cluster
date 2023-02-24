@@ -1,0 +1,20 @@
+{{ ansible_managed | comment }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mqtt-exporter
+  labels:
+    role: mqtt-exporter
+spec:
+  hostNetwork: true
+  containers:
+    - name: mqtt-exporter
+      image: kpetrem/mqtt-exporter:{{ mqtt_exporter_version }}
+      env:
+        - name: MQTT_ADDRESS
+          value: "{{ ansible_host }}"
+        - name: MQTT_USERNAME
+          value: "{{ mqtt_accounts.exporter.username }}"
+        - name: MQTT_PASSWORD
+          value: "{{ mqtt_accounts.exporter.password }}"
+

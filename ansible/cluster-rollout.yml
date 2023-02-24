@@ -4,6 +4,7 @@
 - import_playbook: playbooks/gas_meter.yml
 - import_playbook: playbooks/unifi_controller.yml
 - import_playbook: playbooks/mosquitto.yml
+- import_playbook: playbooks/prometheus_mqtt_exporter.yml
 - import_playbook: playbooks/prometheus_server.yml
 - import_playbook: playbooks/grafana.yml
 - import_playbook: playbooks/prometheus_node_exporter.yml

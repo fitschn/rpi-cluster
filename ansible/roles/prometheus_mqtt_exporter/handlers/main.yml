@@ -1,0 +1,17 @@
+- name: restart mqtt-exporter
+  ansible.builtin.shell:
+    cmd: |
+      crictl stop $(crictl ps --name mqtt-exporter -q) && \
+      crictl rm $(crictl ps -a --name mqtt-exporter -q)
+  notify: wait for mqtt-exporter
+  changed_when: true
+
+- name: wait for mqtt-exporter
+  ansible.builtin.command:
+    cmd: crictl ps -q --name mqtt-exporter
+  register: mqtt_exporter_container
+  until: mqtt_exporter_container.stdout != ""
+  delay: 10
+  retries: 18
+  changed_when: false
+  when: not ansible_check_mode

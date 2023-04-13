@@ -3,3 +3,4 @@
     cmd: kill -SIGHUP $(pidof mosquitto)
   args:
     executable: /bin/bash
+  changed_when: true

@@ -4,6 +4,7 @@
       crictl stop $(crictl ps --name unifi-exporter -q) && \
       crictl rm $(crictl ps -a --name unifi-exporter -q)
   notify: wait for unifi-exporter
+  changed_when: true
 
 - name: wait for unifi-exporter
   ansible.builtin.command:

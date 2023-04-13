@@ -2,6 +2,7 @@
   ansible.builtin.shell:
     cmd: crictl stop $(crictl ps --name grafana -q) && crictl rm $(crictl ps -a --name grafana -q)
   notify: wait for grafana
+  changed_when: true
 
 - name: wait for grafana
   ansible.builtin.command:

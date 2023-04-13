@@ -3,3 +3,4 @@
     cmd: kill -SIGHUP $(pidof prometheus)
   args:
     executable: /bin/bash
+  changed_when: true

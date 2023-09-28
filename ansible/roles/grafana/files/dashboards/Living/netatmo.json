@@ -24,7 +24,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 17,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -73,9 +72,10 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true
+        "showUnfilled": true,
+        "valueMode": "color"
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "10.0.2",
       "targets": [
         {
           "datasource": {
@@ -140,7 +140,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "10.0.2",
       "targets": [
         {
           "datasource": {
@@ -207,7 +207,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "10.0.2",
       "targets": [
         {
           "datasource": {
@@ -533,12 +533,117 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBF011F96B582B511"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "lengthmm"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "id": 28,
+      "interval": "1h",
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBF011F96B582B511"
+          },
+          "editorMode": "code",
+          "expr": "netatmo_sensor_rain_amount_mm{module=\"Regenmesser\"}",
+          "legendFormat": "{{module}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Rain",
+      "type": "timeseries"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 24
       },
       "id": 15,
       "panels": [],
@@ -611,7 +716,7 @@
         "h": 6,
         "w": 12,
         "x": 0,
-        "y": 19
+        "y": 25
       },
       "id": 11,
       "options": {
@@ -720,7 +825,7 @@
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 19
+        "y": 25
       },
       "id": 8,
       "options": {
@@ -822,7 +927,7 @@
         "h": 6,
         "w": 12,
         "x": 0,
-        "y": 25
+        "y": 31
       },
       "id": 19,
       "options": {
@@ -919,7 +1024,7 @@
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 25
+        "y": 31
       },
       "id": 21,
       "options": {
@@ -961,7 +1066,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 37
       },
       "id": 17,
       "panels": [],
@@ -1034,7 +1139,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 32
+        "y": 38
       },
       "id": 18,
       "options": {
@@ -1143,7 +1248,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 32
+        "y": 38
       },
       "id": 9,
       "options": {
@@ -1245,7 +1350,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 39
+        "y": 45
       },
       "id": 20,
       "options": {
@@ -1281,20 +1386,21 @@
       "type": "timeseries"
     }
   ],
-  "schemaVersion": 37,
+  "refresh": "",
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Netatmo",
   "uid": "xSVr0doVy",
-  "version": 14,
+  "version": 1,
   "weekStart": ""
 }

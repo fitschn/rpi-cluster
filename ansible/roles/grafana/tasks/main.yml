@@ -80,6 +80,17 @@
     value: "{{ ansible_host }}"
     solo: true
     api_token: "{{ cloudflare_api_token }}"
+  when: ansible_host is ansible.utils.ipv4
+
+- name: create/update dns entry
+  community.general.cloudflare_dns:
+    zone: ohr-mit-n.net
+    record: "{{ inventory_hostname | regex_replace('[.]', '-') }}"
+    type: AAAA
+    value: "{{ ansible_host }}"
+    solo: true
+    api_token: "{{ cloudflare_api_token }}"
+  when: ansible_host is ansible.utils.ipv6
 
 # It has to be done manually
 # - name: Install grafana windrose plugin

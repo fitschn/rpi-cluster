@@ -1,6 +1,8 @@
 ---
 - name: Deploy grafana
-  hosts: pi4-r01-s04
+  hosts:
+    - pi4-r01-s04
+    - 1.playground.man
   become: true
   roles:
     - grafana

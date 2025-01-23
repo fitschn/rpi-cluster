@@ -28,7 +28,9 @@ jobs:
       - name: hotfix for apt issue https://github.com/actions/runner-images/issues/675
         run: sudo sed -i 's/azure\./de\./' /etc/apt/sources.list
       - name: install build dependencies
-        run: sudo apt-get update && sudo apt-get install coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc qemu-utils kpartx gpg pigz
+        run: sudo apt-get update && sudo apt-get install coreutils quilt parted qemu-user-static \
+          debootstrap zerofree zip dosfstools libarchive-tools libcap2-bin grep rsync xz-utils \
+          file git curl bc gpg pigz xxd arch-test
         
       - name: build the Raspbian OS Lite image
         run: cd ./pi-gen && sudo ./build.sh -c ../rpi-k3s/pi-gen/config

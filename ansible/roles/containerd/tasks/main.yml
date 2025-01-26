@@ -1,11 +1,30 @@
-- name: install and configure containerd
+# User within this group can interact with containerd
+- name: Create system group for containerd
+  ansible.builtin.group:
+    name: containerd
+    system: true
+  register: containerd_group
+
+# Set gid, when ansible is running in check mode and the containerd group doesn't exist yet
+- name: Set gid for containerd group in check-mode
+  ansible.builtin.set_fact:
+    containerd_group:
+      gid: 0
+  when:
+    - ansible_check_mode
+    - containerd_group.gid is undefined
+
+- name: Install and configure containerd
   ansible.builtin.include_tasks: containerd.yml
 
-- name: deploy CNI
+- name: Install and configure container runtime
+  ansible.builtin.include_tasks: crun.yml
+
+- name: Deploy CNI plugins
   ansible.builtin.include_tasks: cni.yml
 
-- name: deploy crictl
+- name: Deploy crictl
   ansible.builtin.include_tasks: crictl.yml
 
-- name: deploy nerdctl
+- name: Deploy nerdctl
   ansible.builtin.include_tasks: nerdctl.yml

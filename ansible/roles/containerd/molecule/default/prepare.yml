@@ -1,0 +1,23 @@
+- name: Wait for connectivity
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Wait for ansible connection
+      ansible.builtin.wait_for_connection:
+        delay: 10
+        timeout: 60
+
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Set hostname
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}"
+
+    - name: Setup /etc/hosts
+      ansible.builtin.lineinfile:
+        line: "{{ item.address }} {{ item.instance }}.io.ki {{ item.instance }}"
+        path: /etc/hosts
+      loop: "{{ lookup('file', molecule_instance_config) }}"

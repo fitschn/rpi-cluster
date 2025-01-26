@@ -1,4 +1,4 @@
-- name: make sure, mosquitto dirs exists
+- name: Make sure, mosquitto dirs exists
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -9,7 +9,7 @@
     - /etc/mosquitto
     - /opt/mosquitto/data
 
-- name: deploy mosquitto config files and reload mosquitto
+- name: Deploy mosquitto config files and reload mosquitto
   ansible.builtin.template:
     src: "{{ item }}"
     dest: "/etc/mosquitto/{{ item }}"
@@ -19,9 +19,9 @@
   loop:
     - mosquitto.conf
     - mqtt_users
-  notify: reload mosquitto
+  notify: Reload mosquitto
 
-- name: deploy container manifest
+- name: Deploy container manifest
   ansible.builtin.template:
     src: mosquitto.yml
     dest: /opt/kubelet/manifests/mosquitto.yml
@@ -29,7 +29,7 @@
     group: root
     mode: "0444"
 
-- name: wait for container to come up
+- name: Wait for container to come up
   ansible.builtin.command:
     cmd: crictl ps -q --name mosquitto
   register: mosquitto_container
@@ -39,7 +39,7 @@
   changed_when: false
   when: not ansible_check_mode
 
-- name: create/update dns entry
+- name: Create/update dns entry
   community.general.cloudflare_dns:
     zone: ohr-mit-n.net
     record: mqtt

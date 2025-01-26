@@ -1,20 +1,20 @@
-- name: check if swap file exists
+- name: Check if swap file exists
   ansible.builtin.stat:
     path: /var/swap
   register: swapfile
 
-- name: disable swap if swap file exists
+- name: Disable swap if swap file exists
   ansible.builtin.command:
     cmd: dphys-swapfile swapoff
   when: swapfile.stat.exists
   changed_when: true
 
-- name: uninstall swap file if it exists
+- name: Uninstall swap file if it exists
   ansible.builtin.command:
     cmd: dphys-swapfile uninstall
     removes: /var/swap
 
-- name: make sure dphys-swapfile is disabled
+- name: Make sure dphys-swapfile is disabled
   ansible.builtin.systemd:
     name: dphys-swapfile
     state: stopped

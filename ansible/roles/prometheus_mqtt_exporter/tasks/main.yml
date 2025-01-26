@@ -1,4 +1,4 @@
-- name: deploy container manifest
+- name: Deploy container manifest
   ansible.builtin.template:
     src: mqtt-exporter.yml
     dest: /opt/kubelet/manifests/mqtt-exporter.yml
@@ -6,7 +6,7 @@
     group: root
     mode: "0440"
 
-- name: wait for container to come up
+- name: Wait for container to come up
   ansible.builtin.command:
     cmd: crictl ps -q --name mqtt-exporter
   register: mqtt_exporter_container

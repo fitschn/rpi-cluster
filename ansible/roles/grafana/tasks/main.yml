@@ -1,4 +1,4 @@
-- name: make sure, grafana dirs exists
+- name: Make sure, grafana dirs exists
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -15,7 +15,7 @@
     - /opt/grafana/dashboards
     - /opt/grafana/plugins
 
-- name: deploy grafana config
+- name: Deploy grafana config
   ansible.builtin.template:
     src: "{{ item }}"
     dest: "/etc/grafana/{{ item }}"
@@ -24,9 +24,9 @@
     mode: '0440'
   loop:
     - grafana.ini
-  notify: restart grafana
+  notify: Restart grafana
 
-- name: add prometheus datasources
+- name: Add prometheus datasources
   ansible.builtin.template:
     src: "datasources/prometheus.yml"
     dest: "/etc/grafana/provisioning/datasources/{{ item.url | urlsplit('hostname') }}.yml"
@@ -34,18 +34,18 @@
     group: 472
     mode: '0440'
   loop: '{{ grafana_ds_prometheus }}'
-  notify: restart grafana
+  notify: Restart grafana
 
-- name: add dashboard datasources
+- name: Add dashboard datasources
   ansible.builtin.copy:
     src: provisioning/dashboards/
     dest: /etc/grafana/provisioning/dashboards/
     mode: "0440"
     owner: 472
     group: 472
-  notify: restart grafana
+  notify: Restart grafana
 
-- name: deploy dashboards
+- name: Deploy dashboards
   ansible.builtin.copy:
     src: dashboards/
     dest: /opt/grafana/dashboards/
@@ -54,7 +54,7 @@
     owner: 472
     group: 472
 
-- name: deploy container manifest
+- name: Deploy container manifest
   ansible.builtin.template:
     src: grafana.yml
     dest: /opt/kubelet/manifests/grafana.yml
@@ -62,7 +62,7 @@
     group: root
     mode: "0444"
 
-- name: wait for container to come up
+- name: Wait for container to come up
   ansible.builtin.command:
     cmd: crictl ps -q --name grafana
   register: grafana_container
@@ -72,7 +72,7 @@
   changed_when: false
   when: not ansible_check_mode
 
-- name: create/update dns entry
+- name: Create/update dns entry
   community.general.cloudflare_dns:
     zone: ohr-mit-n.net
     record: grafana

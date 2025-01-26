@@ -1,4 +1,4 @@
-grafana_version: 10.0.2
+grafana_version: 11.4.0
 
 grafana_ds_prometheus:
   - name: 'Prometheus'

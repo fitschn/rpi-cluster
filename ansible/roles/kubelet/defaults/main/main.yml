@@ -1,4 +1,15 @@
-kubelet_version: v1.26.0
+# Due a bug in containerd, a kubelet restart can trigger a restart of all pods:
+# https://github.com/containerd/containerd/issues/10363
+# renovate: datasource=github-releases depName=kubernetes/kubernetes
+kubelet_version: v1.32.0
 # Download source: https://www.downloadkubernetes.com
-kubelet_dl_url: "https://dl.k8s.io/{{ kubelet_version }}/bin/linux/{{ custom_arch }}/kubelet"
-kubelet_sha256: "sha256:https://dl.k8s.io/{{ kubelet_version }}/bin/linux/{{ custom_arch }}/kubelet.sha256"
+kubelet_dl_url: https://dl.k8s.io/{{ kubelet_version }}/bin/linux/{{ arch }}/kubelet
+kubelet_sha256: sha256:https://dl.k8s.io/{{ kubelet_version }}/bin/linux/{{ arch }}/kubelet.sha256
+
+# https://github.com/yannh/kubeconform
+kubeconform_version: v0.6.4
+kubeconform_dl_url: "https://github.com/yannh/kubeconform/releases/download/\
+  {{ kubeconform_version }}/kubeconform-linux-{{ arch }}.tar.gz"
+kubeconform_sha256:
+  "sha256:https://github.com/yannh/kubeconform/releases/download/\
+  {{ kubeconform_version }}/CHECKSUMS"

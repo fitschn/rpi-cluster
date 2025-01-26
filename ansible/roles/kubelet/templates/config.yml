@@ -1,3 +1,4 @@
+{{ ansible_managed | comment }}
 apiVersion: kubelet.config.k8s.io/v1beta1
 kind: KubeletConfiguration
 enableServer: true
@@ -7,14 +8,14 @@ fileCheckFrequency: 20s
 httpCheckFrequency: 20s
 address: "::1"
 port: 10250
-readOnlyPort: 10255
+readOnlyPort: 0
 authentication:
   x509: {}
   webhook:
     enabled: false
     cacheTTL: 2m0s
   anonymous:
-    enabled: true
+    enabled: false
 authorization:
   mode: AlwaysAllow
   webhook:
@@ -89,3 +90,5 @@ enableDebugFlagsHandler: true
 seccompDefault: false
 memoryThrottlingFactor: 0.8
 registerNode: true
+featureGates:
+  UserNamespacesSupport: true

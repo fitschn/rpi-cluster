@@ -1,10 +1,10 @@
-- name: restart grafana
+- name: Restart grafana
   ansible.builtin.shell:
     cmd: crictl stop $(crictl ps --name grafana -q) && crictl rm $(crictl ps -a --name grafana -q)
-  notify: wait for grafana
+  notify: Wait for grafana
   changed_when: true
 
-- name: wait for grafana
+- name: Wait for grafana
   ansible.builtin.command:
     cmd: crictl ps -q --name grafana
   register: grafana_container

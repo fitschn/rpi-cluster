@@ -1,0 +1,8 @@
+- name: Converge
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Test containerd role
+      ansible.builtin.include_role:
+        name: containerd

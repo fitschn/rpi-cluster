@@ -1,30 +1,55 @@
-- name: create config dir
-  ansible.builtin.file:
-    state: directory
-    path: /opt/unifi-controller/config
-    owner: 911
-    group: 911
-    mode: "0755"
+- name: Install python3-debian
+  ansible.builtin.apt:
+    name: python3-debian
 
-- name: deploy container manifest
-  ansible.builtin.template:
-    src: unifi-controller.yml
-    dest: /opt/kubelet/manifests/unifi-controller.yml
-    owner: root
-    group: root
-    mode: "0444"
+- name: Add unifi repository
+  ansible.builtin.deb822_repository:
+    name: unifi
+    types: deb
+    uris: https://www.ui.com/downloads/unifi/debian
+    suites: stable
+    components: ubiquiti
+    signed_by: https://dl.ui.com/unifi/unifi-repo.gpg
+  ignore_errors: "{{ ansible_check_mode }}"
+  register: unifi_repo
 
-- name: wait for container to come up
-  ansible.builtin.command:
-    cmd: crictl ps -q --name unifi-controller
-  register: unifi_controller_container
-  until: unifi_controller_container.stdout != ""
-  delay: 5
-  retries: 60
-  changed_when: false
-  when: not ansible_check_mode
+# Only for Ubuntu focal is an ARM64 version of MongoDB available
+# All MongoDB versions >4.4 require a newer CPU
+- name: Add mongodb repository
+  ansible.builtin.deb822_repository:
+    name: mongodb
+    types: deb
+    uris: https://repo.mongodb.org/apt/ubuntu
+    suites: "focal/mongodb-org/4.4"
+    components: multiverse
+    signed_by: https://www.mongodb.org/static/pgp/server-4.4.asc
+  ignore_errors: "{{ ansible_check_mode }}"
+  register: mongodb_repo
 
-- name: create/update dns entry
+- name: Refresh apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  when: unifi_repo.changed or mongodb_repo.changed # noqa: no-handler
+
+# All versions >4.4.18 doesn't work, so we have to pin it to 4.4.18
+- name: Install mongodb as a requirement for unifi network application
+  ansible.builtin.package:
+    name: mongodb-org-server=4.4.18
+    state: present
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Pin mongodb, to disable updates
+  ansible.builtin.dpkg_selections:
+    name: mongodb-org-server
+    selection: hold
+
+- name: Install unifi network application
+  ansible.builtin.package:
+    name: unifi
+    state: present
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Create/update dns entry
   community.general.cloudflare_dns:
     zone: ohr-mit-n.net
     record: unifi

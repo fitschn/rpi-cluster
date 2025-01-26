@@ -1,0 +1,24 @@
+# Defaults are automactically loaded from .config/molecule/config.yml
+platforms:
+  - name: molecule-22-containerd
+    flavor: s1.micro
+    image: ioki-molecule-ubuntu22
+    user: ubuntu
+    floating_ip: false
+    security_group:
+      name: molecule
+      create: false
+    network:
+      name: frontnet
+      create: false
+  - name: molecule-24-containerd
+    flavor: s1.micro
+    image: ioki-molecule-ubuntu24
+    user: ubuntu
+    floating_ip: false
+    security_group:
+      name: molecule
+      create: false
+    network:
+      name: frontnet
+      create: false

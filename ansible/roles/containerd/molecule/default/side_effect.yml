@@ -1,0 +1,48 @@
+- name: Side Effect - Deploy kubelet and start a container
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Deploy kubelet role
+      ansible.builtin.include_role:
+        name: kubelet
+
+    - name: Flush handlers
+      ansible.builtin.meta: flush_handlers
+
+    - name: Ship nginx container manifest
+      ansible.builtin.copy:
+        dest: "{{ kubelet_pod_manifests }}/nginx.yml"
+        owner: root
+        group: root
+        mode: "0440"
+        content: |
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: nginx
+          spec:
+            hostUsers: false
+            securityContext:
+              fsGroup: 678
+            containers:
+              - name: nginx
+                image: nginx:mainline-alpine-slim
+                ports:
+                  - containerPort: 80
+                    hostPort: 80
+
+    # We wait for nginx, before we restart containerd in the next step. Otherwise restart could be
+    # too early
+    - name: Wait for nginx
+      ansible.builtin.wait_for:
+        port: "80"
+        delay: 10
+        timeout: 90
+
+    # Containerd is restarted here, so that we can check that all sandbox infos are still available
+    # after restart, especially network infos
+    - name: Restart containerd
+      ansible.builtin.systemd:
+        name: containerd
+        state: restarted

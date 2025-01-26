@@ -1,0 +1,10 @@
+- name: Copy cmdline.txt
+  ansible.builtin.template:
+    src: cmdline.txt
+    dest: /boot/firmware/cmdline.txt
+    mode: "0755"
+  register: cmdline
+
+- name: Reboot
+  ansible.builtin.reboot:
+  when: cmdline.changed # noqa: no-handler

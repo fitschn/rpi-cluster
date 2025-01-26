@@ -1,4 +1,4 @@
-- name: restart unifi-exporter
+- name: Restart unifi-exporter
   ansible.builtin.shell:
     cmd: |
       crictl stop $(crictl ps --name unifi-exporter -q) && \
@@ -6,7 +6,7 @@
   notify: wait for unifi-exporter
   changed_when: true
 
-- name: wait for unifi-exporter
+- name: Wait for unifi-exporter
   ansible.builtin.command:
     cmd: crictl ps -q --name unifi-exporter
   register: unifi_exporter_container

@@ -1,11 +1,24 @@
-nerdctl_version: 1.1.0
-nerdctl_dl_url: https://github.com/containerd/nerdctl/releases/download/v{{ nerdctl_version }}/nerdctl-{{ nerdctl_version }}-linux-{{ custom_arch }}.tar.gz
-nerdctl_sha256:
-  amd64: fcfd36b0b9441541aab0793c0f586599e6d774781c74f16468a3300026120c0e
-  arm64: a0b57b39341b9d67a3f0ae74e19985c72e930bad14291cbbd8479ed6a6a64e83
+containerd_version: v2.0.2
+containerd_dl_url: "https://github.com/containerd/containerd/releases/download/\
+  {{ containerd_version }}/containerd-{{ containerd_version[1:] }}-linux-{{ arch }}.tar.gz"
+containerd_sha256: sha256:{{ containerd_dl_url }}.sha256sum
 
-crictl_version: v1.26.0
-crictl_dl_url: https://github.com/kubernetes-sigs/cri-tools/releases/download/{{ crictl_version }}/crictl-{{ crictl_version }}-linux-{{ custom_arch }}.tar.gz
-crictl_sha256:
-  amd64: cda5e2143bf19f6b548110ffba0fe3565e03e8743fadd625fee3d62fc4134eed
-  arm64: b632ca705a98edc8ad7806f4279feaff956ac83aa109bba8a85ed81e6b900599
+cni_version: v1.6.2
+cni_dl_url: "https://github.com/containernetworking/plugins/releases/download/\
+  {{ cni_version }}/cni-plugins-linux-{{ arch }}-{{ cni_version }}.tgz"
+cni_sha256: sha256:{{ cni_dl_url }}.sha256
+
+crun_version: 1.19.1
+crun_dl_url: "https://github.com/containers/crun/releases/download/\
+  {{ crun_version }}/crun-{{ crun_version }}-linux-{{ arch }}"
+
+crictl_version: v1.32.0
+crictl_dl_url: "https://github.com/kubernetes-sigs/cri-tools/releases/download/\
+  {{ crictl_version }}/crictl-{{ crictl_version }}-linux-{{ arch }}.tar.gz"
+crictl_sha256: sha256:{{ crictl_dl_url }}.sha256
+
+nerdctl_version: v2.0.3
+nerdctl_dl_url: "https://github.com/containerd/nerdctl/releases/download/\
+  {{ nerdctl_version }}/nerdctl-{{ nerdctl_version[1:] }}-linux-{{ arch }}.tar.gz"
+nerdctl_sha256: "sha256:https://github.com/containerd/nerdctl/releases/download/\
+  {{ nerdctl_version }}/SHA256SUMS"

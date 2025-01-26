@@ -1,4 +1,4 @@
-- name: create config dir
+- name: Create config dir
   ansible.builtin.file:
     state: directory
     path: /etc/unifi-exporter
@@ -6,16 +6,16 @@
     group: root
     mode: "0755"
 
-- name: deploy config file
+- name: Deploy config file
   ansible.builtin.template:
     src: unpoller.toml
     dest: /etc/unifi-exporter/unpoller.toml
     mode: "0640"
     owner: root
     group: root
-  notify: restart unifi-exporter
+  notify: Restart unifi-exporter
 
-- name: deploy container manifest
+- name: Deploy container manifest
   ansible.builtin.template:
     src: unifi-exporter.yml
     dest: /opt/kubelet/manifests/unifi-exporter.yml
@@ -23,7 +23,7 @@
     group: root
     mode: "0444"
 
-- name: wait for container to come up
+- name: Wait for container to come up
   ansible.builtin.command:
     cmd: crictl ps -q --name unifi-exporter
   register: unifi_exporter_container

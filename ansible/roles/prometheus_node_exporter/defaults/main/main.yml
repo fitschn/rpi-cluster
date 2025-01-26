@@ -1,4 +1,4 @@
-node_exporter_version: v1.5.0
+node_exporter_version: v1.8.2
 
 # only enable modules that are not enabled by default
 node_exporter_collectors_enabled:

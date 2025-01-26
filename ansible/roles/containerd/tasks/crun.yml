@@ -1,0 +1,26 @@
+- name: Create directories for crun
+  ansible.builtin.file:
+    name: "{{ item }}"
+    state: directory
+    mode: "0750"
+  loop:
+    - /opt/crun
+
+- name: Check crun version
+  ansible.builtin.command:
+    cmd: /opt/crun/crun --version
+  register: crun_version_deployed
+  changed_when: false
+  ignore_errors: true
+  check_mode: false # Check always the version, to make sure the variable is created
+
+- name: Download crun
+  ansible.builtin.get_url:
+    url: "{{ crun_dl_url }}"
+    dest: "/opt/crun/crun"
+    mode: "0750"
+    force: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  when: >
+    crun_version_deployed.failed or
+    not crun_version | string in crun_version_deployed.stdout_lines.0

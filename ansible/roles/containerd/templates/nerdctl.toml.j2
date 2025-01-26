@@ -1,0 +1,8 @@
+{{ ansible_managed | comment }}
+debug           = false
+debug_full      = false
+address         = "unix:///run/containerd/containerd.sock"
+namespace       = "k8s.io"
+cgroup_manager  = "systemd"
+experimental    = true
+cni_netconfpath = "/etc/cni/net.d"

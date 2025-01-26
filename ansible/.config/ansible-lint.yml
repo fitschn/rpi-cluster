@@ -1,5 +1,5 @@
 skip_list:
-  - name[casing]
+  - var-naming[no-role-prefix]
 
 exclude_paths:
   - ../group_vars/all/secrets.yml

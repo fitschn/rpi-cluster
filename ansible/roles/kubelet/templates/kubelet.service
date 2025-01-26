@@ -9,7 +9,8 @@ StartLimitIntervalSec=60
 ExecStart=/opt/kubelet/kubelet \
   --container-runtime-endpoint unix:///run/containerd/containerd.sock \
   --node-ip "::" \
-  --config /etc/kubelet/config.yml
+  --config /etc/kubelet/config.yml \
+  --v 1
 Restart=on-failure
 RestartSec=5
 

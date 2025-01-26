@@ -1,17 +1,53 @@
-# We don't want to deploy any CNI stuff at the moment, but to make kubelet and containerd happy,
-# we have to initialize something. Therefore we deploy some dummy config, without any functionality.
-# For now we only support host networking. If we need more, we have to deploy and configure it.
-# https://github.com/containernetworking/cni
-
-- name: create config dir
+- name: Create CNI dirs
   ansible.builtin.file:
-    path: /etc/cni/net.d
+    path: "{{ item }}"
     state: directory
-    mode: "0755"
+    mode: "0750"
+    owner: root
+    group: containerd
+  loop:
+    - /etc/cni/net.d
+    - /opt/cni/bin
 
-# No service reload necessary - containerd will load it automatically
-- name: ship dummy plugin config to make containerd and kubelet happy
+- name: Ship cni plugin config
   ansible.builtin.template:
-    src: 99-dummy.conf
-    dest: /etc/cni/net.d/99-dummy.conf
+    src: 10-containerd-net.conflist.j2
+    dest: /etc/cni/net.d/10-containerd-net.conflist
+    mode: "0440"
+
+- name: Check cni version
+  ansible.builtin.command:
+    # Workaround until https://github.com/containernetworking/plugins/issues/1019 is fixed.
+    # Don't forget to update also the following tasks (check stderr instead of stdout),
+    # when the ticket is fixed.
+    cmd: cat /opt/cni/version.txt
+    # cmd: /opt/cni/bin/loopback --version
+  register: cni_version_deployed
+  changed_when: false
+  ignore_errors: true
+  check_mode: false # Check always the version, to make sure the variable is created
+
+- name: Download cni package
+  ansible.builtin.get_url:
+    url: "{{ cni_dl_url }}"
+    dest: "/tmp/cni-{{ cni_version }}.tar.gz"
+    checksum: "{{ cni_sha256 }}"
     mode: "0444"
+  notify: Remove cni download
+  when: >
+    cni_version_deployed.failed or
+    not cni_version | string in cni_version_deployed.stdout_lines.0
+
+- name: Unpack cni package
+  ansible.builtin.unarchive:
+    dest: /opt/cni/bin
+    src: "/tmp/cni-{{ cni_version }}.tar.gz"
+    mode: u=rwX,g=rX,o=
+    owner: root
+    group: containerd
+    remote_src: true
+  when: >
+    cni_version_deployed.failed or
+    not cni_version | string in cni_version_deployed.stdout_lines.0
+  ignore_errors: "{{ ansible_check_mode }}"
+  notify: Document version info

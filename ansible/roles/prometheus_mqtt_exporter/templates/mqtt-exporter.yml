@@ -12,7 +12,7 @@ spec:
       image: kpetrem/mqtt-exporter:{{ mqtt_exporter_version }}
       env:
         - name: MQTT_ADDRESS
-          value: "{{ ansible_host }}"
+          value: "mqtt.ohr-mit-n.net"
         - name: MQTT_USERNAME
           value: "{{ mqtt_accounts.exporter.username }}"
         - name: MQTT_PASSWORD

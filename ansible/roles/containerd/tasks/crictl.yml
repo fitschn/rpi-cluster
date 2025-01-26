@@ -1,32 +1,40 @@
-- name: check current crictl version
+- name: Check current crictl version
   ansible.builtin.command:
-    cmd: /usr/local/bin/crictl --version
-  register: cur_crictl_version
+    cmd: /usr/local/sbin/crictl --version
+  register: crictl_version_deployed
   ignore_errors: true
   changed_when: false
+  check_mode: false # Check always the version, to make sure the variable is created
 
-- name: download crictl
+- name: Download crictl
   ansible.builtin.get_url:
     url: "{{ crictl_dl_url }}"
-    dest: "/tmp/crictl-{{ crictl_version }}.tar.gz"
-    checksum: "sha256:{{ crictl_sha256[custom_arch] }}"
+    dest: /tmp/crictl-{{ crictl_version }}.tar.gz
+    checksum: "{{ crictl_sha256 }}"
     mode: "0444"
-  notify: remove crictl download
-  when: cur_crictl_version.failed or not crictl_version in cur_crictl_version.stdout
+  notify: Remove crictl download
+  register: crictl_download
+  when: >
+    crictl_version_deployed.failed or
+    not crictl_version | string in crictl_version_deployed.stdout
 
-- name: deploy crictl if necessary
+- name: Deploy crictl if necessary
   ansible.builtin.unarchive:
-    src: "/tmp/crictl-{{ crictl_version }}.tar.gz"
-    dest: /usr/local/bin/
+    src: /tmp/crictl-{{ crictl_version }}.tar.gz
+    dest: /usr/local/sbin/
     remote_src: true
     owner: root
-    group: root
-    mode: "0555"
-  when: cur_crictl_version.failed or not crictl_version in cur_crictl_version.stdout
+    group: containerd
+    mode: "0750"
+  when: >
+    crictl_version_deployed.failed or
+    not crictl_version | string in crictl_version_deployed.stdout
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: ship crictl config
+- name: Ship crictl config
   ansible.builtin.template:
-    src: crictl.yaml
+    src: crictl.yaml.j2
     dest: /etc/crictl.yaml
-    mode: "0444"
+    mode: "0440"
+    owner: root
+    group: containerd

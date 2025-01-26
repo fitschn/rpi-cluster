@@ -1,5 +1,25 @@
-- name: restart kubelet
+- name: Restart kubelet
   ansible.builtin.systemd:
     name: kubelet
     state: restarted
   ignore_errors: "{{ ansible_check_mode }}"
+  notify: Check running containers
+
+- name: Check running containers
+  ansible.builtin.command:
+    cmd: crictl ps --state Running --output json
+  register: containers_after
+  changed_when: false
+  # As we can't set an initial delay, we skip always the first check. Otherwise, the check could be
+  # to soon after the restart of kubelet and kubelet hasn't triggered the restart of the pods yet.
+  until: |
+    containers_after.attempts > 1
+    and
+    (containers_before.stdout | from_json | community.general.json_query(container_query) | sort
+    ==
+    containers_after.stdout | from_json | community.general.json_query(container_query) | sort)
+  vars:
+    container_query: "containers[*].metadata.name"
+  retries: 6
+  delay: 10
+  when: not ansible_check_mode

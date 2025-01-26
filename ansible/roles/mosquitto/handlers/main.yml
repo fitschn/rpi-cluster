@@ -1,4 +1,4 @@
-- name: reload mosquitto
+- name: Reload mosquitto
   ansible.builtin.shell:
     cmd: kill -SIGHUP $(pidof mosquitto)
   args:

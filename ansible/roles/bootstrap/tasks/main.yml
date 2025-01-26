@@ -4,5 +4,11 @@
 - name: Configure hostname with dns
   ansible.builtin.include_tasks: hostname.yml
 
-- name: disable swap file
+- name: Disable swap file
   ansible.builtin.include_tasks: swap.yml
+
+- name: Update cmdline.txt
+  ansible.builtin.include_tasks: cmdline.yml
+  when:
+    - ansible_distribution == "Debian"
+    - ansible_distribution_major_version == "12"

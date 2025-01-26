@@ -1,30 +1,67 @@
-- name: add key for docker repository (for containerd packages)
-  ansible.builtin.apt_key:
-    url: https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
-    state: present
-
-- name: add docker repo (for containerd packages)
-  ansible.builtin.apt_repository:
-    repo: "deb [arch={{ custom_arch }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
-    state: present
-
-- name: update apt cache
-  ansible.builtin.apt:
-    update_cache: true
-
-- name: install containerd
-  ansible.builtin.apt:
-    name: containerd.io
-
-- name: create config directory
+- name: Create directories for containerd
   ansible.builtin.file:
-    name: /etc/containerd
+    name: "{{ item }}"
     state: directory
-    mode: "0555"
+    mode: "0750"
+    owner: root
+    group: containerd
+  loop:
+    - /etc/containerd
+    - /opt/containerd
 
-- name: ship config
+- name: Check containerd version
+  ansible.builtin.command:
+    cmd: /opt/containerd/bin/containerd --version
+  register: containerd_version_deployed
+  changed_when: false
+  ignore_errors: true
+  check_mode: false # Check always the version, to make sure the variable is created
+
+- name: Download containerd
+  ansible.builtin.get_url:
+    url: "{{ containerd_dl_url }}"
+    dest: "/tmp/containerd-{{ containerd_version }}.tar.gz"
+    checksum: "{{ containerd_sha256 }}"
+    mode: "0444"
+  register: containerd_download_task
+  notify: Remove containerd download
+  when: >
+    containerd_version_deployed.failed or
+    not (containerd_version + " ") in containerd_version_deployed.stdout
+
+- name: Unpack containerd
+  ansible.builtin.unarchive:
+    dest: /opt/containerd
+    src: "/tmp/containerd-{{ containerd_version }}.tar.gz"
+    mode: u=rwX,g=rX,o=
+    owner: root
+    group: containerd
+    remote_src: true
+  when: containerd_download_task.changed # noqa: no-handler
+  notify: Restart containerd
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Ship config v3
   ansible.builtin.template:
-    src: config.toml
+    src: config.toml.v3.j2
     dest: /etc/containerd/config.toml
     mode: "0440"
-  notify: restart containerd
+    owner: root
+    group: containerd
+  notify: Restart containerd
+  no_log: true # Disable log output, to not display credentials in diff mode
+
+- name: Ship systemd service
+  ansible.builtin.template:
+    src: containerd.service.j2
+    dest: /etc/systemd/system/containerd.service
+    mode: "0444"
+  notify: Restart containerd
+
+- name: Enable containerd service
+  ansible.builtin.systemd:
+    name: containerd
+    enabled: true
+    state: started
+    daemon_reload: true
+  ignore_errors: "{{ ansible_check_mode }}"

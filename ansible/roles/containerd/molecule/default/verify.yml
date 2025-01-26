@@ -1,0 +1,113 @@
+- name: Verify
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Gather facts for machine
+      ansible.builtin.setup:
+        gather_subset:
+          - '!all'
+          - 'default_ipv4'
+          - 'default_ipv6'
+
+    - name: Load default vars
+      ansible.builtin.include_vars:
+        dir: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/"
+        extensions:
+          - 'yml'
+        ignore_files:
+          - 'secrets.sops.yml'
+
+    - name: Register status of all services
+      ansible.builtin.service_facts:
+
+    - name: Check containerd service
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services["containerd.service"].status == 'enabled'
+          - ansible_facts.services["containerd.service"].state == 'running'
+        success_msg: "Service containerd.service is enabled and running"
+        fail_msg: "Service containerd.service must be enabled and running"
+
+    - name: Check for containerd group
+      ansible.builtin.getent:
+        database: group
+        key: containerd
+
+    - name: Get containerd version
+      ansible.builtin.command:
+        cmd: /opt/containerd/bin/containerd --version
+      register: containerd_version_deployed
+      changed_when: false
+
+    - name: Check containerd version
+      ansible.builtin.assert:
+        that:
+          - containerd_version | string in containerd_version_deployed.stdout
+        success_msg: "Version of containerd is {{ containerd_version }}."
+        fail_msg: "Version of containerd must be {{ containerd_version }}."
+
+    - name: Info message
+      ansible.builtin.debug:
+        msg: "All following tasks will test the changes from side-effect playbook."
+
+    - name: Check kubelet service
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services["kubelet.service"].status == 'enabled'
+          - ansible_facts.services["kubelet.service"].state == 'running'
+        success_msg: "Service kubelet.service is enabled and running"
+        fail_msg: "Service kubelet.service must be enabled and running"
+
+    - name: Get infos for nginx container
+      ansible.builtin.command:
+        cmd: "crictl ps --name '^nginx$' -o json"
+      register: container_info_nginx
+      changed_when: false
+
+    - name: Check that nginx container is running
+      ansible.builtin.assert:
+        that:
+          - container_info_nginx.stdout_lines | length > 5
+        success_msg: "Nginx container is running"
+        fail_msg: "Looks like, nginx isn't running"
+
+    # We assume, we have just one nginx container running
+    - name: Get pod infos for nginx container
+      ansible.builtin.command:
+        cmd: "crictl inspectp {{ container_info_nginx.stdout | from_json | json_query('containers[0].podSandboxId') }}"
+      register: pod_info_nginx
+      changed_when: false
+
+    # https://github.com/containerd/containerd/issues/10363
+    - name: Check that nginx sandbox contains info about IPv4 and IPv6 address
+      ansible.builtin.assert:
+        that:
+          - pod_info_nginx.stdout | from_json | json_query('status.network.ip') is ansible.utils.ipv4
+          - pod_info_nginx.stdout | from_json | json_query('status.network.additionalIps[0].ip') is ansible.utils.ipv6
+        success_msg: "Network infos looking good for pod sandbox"
+        fail_msg: "Network infos are not complete for pod sandbox"
+
+    - name: Check that nginx port is accessible for local IPs
+      ansible.builtin.wait_for:
+        port: 80
+        timeout: 3
+        host: "{{ item }}"
+      loop:
+        - 127.0.0.1
+        - "{{ ansible_default_ipv4.address }}"
+        - "{{ ansible_default_ipv6.address }}"
+
+    - name: Get group assignments for container user
+      ansible.builtin.command:
+        cmd: "crictl exec -ti {{ container_info_nginx.stdout | from_json | json_query('containers[0].id') }} id"
+      register: group_info_nginx
+      changed_when: false
+
+    # https://github.com/containerd/containerd/issues/10847
+    - name: Check for fsGroup setting
+      ansible.builtin.assert:
+        that:
+          - '"678" is in group_info_nginx.stdout'
+        success_msg: "fsGroup is applied correctly"
+        fail_msg: "fsGroup parameter isn't applied correctly"

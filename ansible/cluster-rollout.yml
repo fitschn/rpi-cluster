@@ -1,12 +1,22 @@
-- import_playbook: playbooks/bootstrap.yml
-- import_playbook: playbooks/containerd.yml
-- import_playbook: playbooks/kubelet.yml
-- import_playbook: playbooks/gas_meter.yml
-- import_playbook: playbooks/unifi_controller.yml
-- import_playbook: playbooks/mosquitto.yml
-- import_playbook: playbooks/prometheus_mqtt_exporter.yml
-- import_playbook: playbooks/prometheus_server.yml
-- import_playbook: playbooks/grafana.yml
-- import_playbook: playbooks/prometheus_node_exporter.yml
-- import_playbook: playbooks/prometheus_unifi_exporter.yml
-- import_playbook: playbooks/prometheus_netatmo_exporter.yml
+- name: Deploy containerd
+  import_playbook: playbooks/containerd.yml
+- name: Deploy kubelet
+  import_playbook: playbooks/kubelet.yml
+- name: Deploy gas-meter
+  import_playbook: playbooks/gas_meter.yml
+- name: Deploy unifi network application
+  import_playbook: playbooks/unifi_controller.yml
+- name: Deploy mosquito MQTT server
+  import_playbook: playbooks/mosquitto.yml
+- name: Deploy mqtt exporter
+  import_playbook: playbooks/prometheus_mqtt_exporter.yml
+- name: Deploy prometheus server
+  import_playbook: playbooks/prometheus_server.yml
+- name: Deploy grafana
+  import_playbook: playbooks/grafana.yml
+- name: Deploy node exporter
+  import_playbook: playbooks/prometheus_node_exporter.yml
+- name: Deploy unifi exporter
+  import_playbook: playbooks/prometheus_unifi_exporter.yml
+- name: Deploy netatmo exporter
+  import_playbook: playbooks/prometheus_netatmo_exporter.yml

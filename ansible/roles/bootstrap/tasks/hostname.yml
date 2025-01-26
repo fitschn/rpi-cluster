@@ -8,7 +8,7 @@
   ansible.builtin.hostname:
     name: "{{ inventory_hostname_short }}"
 
-- name: create/update host dns entry
+- name: Create/Update host dns entry
   community.general.cloudflare_dns:
     zone: ohr-mit-n.net
     record: "{{ inventory_hostname_short }}"

@@ -1,41 +1,50 @@
-- name: check current nerdctl version
+- name: Create directories for nerdctl
+  ansible.builtin.file:
+    name: "{{ item }}"
+    state: directory
+    mode: "0750"
+    owner: root
+    group: containerd
+  loop:
+    - /etc/nerdctl
+
+- name: Check current nerdctl version
   ansible.builtin.command:
-    cmd: /usr/local/bin/nerdctl --version
-  register: cur_nerdctl_version
+    cmd: /usr/local/sbin/nerdctl --version
+  register: nerdctl_version_deployed
   ignore_errors: true
   changed_when: false
+  check_mode: false # Check always the version, to make sure the variable is created
 
-- name: download nerdctl
+- name: Download nerdctl
   ansible.builtin.get_url:
     url: "{{ nerdctl_dl_url }}"
-    dest: "/tmp/nerdctl-{{ nerdctl_version }}.tar.gz"
-    checksum: "sha256:{{ nerdctl_sha256[custom_arch] }}"
+    dest: /tmp/nerdctl-{{ nerdctl_version }}.tar.gz
+    checksum: "{{ nerdctl_sha256 }}"
     mode: "0444"
-  notify: remove nerdctl download
-  when: cur_nerdctl_version.failed or not nerdctl_version in cur_nerdctl_version.stdout
+  notify: Remove nerdctl download
+  register: nerdctl_download
+  when: >
+    nerdctl_version_deployed.failed or
+    not (nerdctl_version | string)[1:] in nerdctl_version_deployed.stdout
 
-- name: deploy nerdctl if necessary
+- name: Deploy nerdctl if necessary
   ansible.builtin.unarchive:
-    src: "/tmp/nerdctl-{{ nerdctl_version }}.tar.gz"
-    dest: /usr/local/bin/
+    src: /tmp/nerdctl-{{ nerdctl_version }}.tar.gz
+    dest: /usr/local/sbin/
     remote_src: true
     owner: root
-    group: root
-    mode: "0555"
-  when: cur_nerdctl_version.failed or not nerdctl_version in cur_nerdctl_version.stdout
+    group: containerd
+    mode: "0750"
+  when: >
+    nerdctl_version_deployed.failed or
+    not (nerdctl_version | string)[1:] in nerdctl_version_deployed.stdout
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: create config dir
-  ansible.builtin.file:
-    path: /etc/nerdctl
-    state: directory
-    owner: root
-    group: root
-    mode: "0755"
-
-- name: ship nerdctl config
+- name: Ship nerdctl config
   ansible.builtin.template:
-    src: nerdctl.toml
+    src: nerdctl.toml.j2
     dest: /etc/nerdctl/nerdctl.toml
-    mode: "0444"
-  ignore_errors: "{{ ansible_check_mode }}"
+    mode: "0440"
+    owner: root
+    group: containerd

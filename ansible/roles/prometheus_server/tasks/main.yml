@@ -1,4 +1,4 @@
-- name: make sure, prometheus dirs exists
+- name: Make sure, prometheus dirs exists
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -11,16 +11,16 @@
     - /etc/prometheus/rules
     - /opt/prometheus/data
 
-- name: deploy prometheus config files and reload prometheus
+- name: Deploy prometheus config files and reload prometheus
   ansible.builtin.template:
     src: config.yml
     dest: /etc/prometheus/prometheus.yml
     owner: root
     group: root
     mode: '0440'
-  notify: reload prometheus
+  notify: Reload prometheus
 
-- name: ship alerting rules
+- name: Ship alerting rules
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "/etc/prometheus/rules/"
@@ -29,9 +29,9 @@
     mode: '0444'
   with_fileglob:
     - ../files/rules/*.yml
-  notify: reload prometheus
+  notify: Reload prometheus
 
-- name: deploy container manifest
+- name: Deploy container manifest
   ansible.builtin.template:
     src: prometheus.yml
     dest: /opt/kubelet/manifests/prometheus.yml
@@ -39,7 +39,7 @@
     group: root
     mode: "0444"
 
-- name: wait for container to come up
+- name: Wait for container to come up
   ansible.builtin.command:
     cmd: crictl ps -q --name prometheus
   register: prometheus_container
@@ -49,7 +49,7 @@
   changed_when: false
   when: not ansible_check_mode
 
-- name: create/update dns entry
+- name: Create/update dns entry
   community.general.cloudflare_dns:
     zone: ohr-mit-n.net
     record: prometheus

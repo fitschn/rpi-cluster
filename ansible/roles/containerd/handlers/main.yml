@@ -1,15 +1,33 @@
-- name: restart containerd
+- name: Restart containerd
   ansible.builtin.systemd:
     name: containerd
     state: restarted
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: remove nerdctl download
+- name: Remove containerd download
   ansible.builtin.file:
-    path: "/tmp/nerdctl-{{ nerdctl_version }}.tar.gz"
+    path: /tmp/containerd-{{ containerd_version }}.tar.gz
     state: absent
 
-- name: remove crictl download
+- name: Remove cni download
   ansible.builtin.file:
-    path: "/tmp/crictl-{{ crictl_version }}.tar.gz"
+    path: /tmp/cni-{{ cni_version }}.tar.gz
     state: absent
+
+- name: Remove crictl download
+  ansible.builtin.file:
+    path: /tmp/crictl-{{ crictl_version }}.tar.gz
+    state: absent
+
+- name: Remove nerdctl download
+  ansible.builtin.file:
+    path: /tmp/nerdctl-{{ nerdctl_version }}.tar.gz
+    state: absent
+
+- name: Document version info
+  ansible.builtin.copy:
+    dest: /opt/cni/version.txt
+    content: "{{ cni_version }}"
+    owner: root
+    group: root
+    mode: "0444"

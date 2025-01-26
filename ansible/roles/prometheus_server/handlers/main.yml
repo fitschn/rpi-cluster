@@ -1,4 +1,4 @@
-- name: reload prometheus
+- name: Reload prometheus
   ansible.builtin.shell:
     cmd: kill -SIGHUP $(pidof prometheus)
   args:

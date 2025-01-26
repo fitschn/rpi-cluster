@@ -1,4 +1,4 @@
-- name: create directories for kubelet
+- name: Create directories for kubelet
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -8,37 +8,38 @@
     - /opt/kubelet
     - /opt/kubelet/manifests
 
-- name: check current kubelet version
+- name: Get list of running containers
   ansible.builtin.command:
-    cmd: /opt/kubelet/kubelet --version
-  register: cur_kubelet_version
-  ignore_errors: true
+    cmd: crictl ps --state Running --output json
+  register: containers_before
   changed_when: false
 
-- name: download kubelet
+- name: Download kubelet
   ansible.builtin.get_url:
     url: "{{ kubelet_dl_url }}"
-    dest: "/opt/kubelet/kubelet"
+    dest: /opt/kubelet/kubelet
     checksum: "{{ kubelet_sha256 }}"
-    mode: "0555"
-  when: cur_kubelet_version.failed or not kubelet_version in cur_kubelet_version.stdout
+    mode: "0550"
+    owner: root
+    group: root
   ignore_errors: "{{ ansible_check_mode }}"
+  notify: Restart kubelet
 
-- name: ship kubelet config
+- name: Ship kubelet config
   ansible.builtin.template:
     src: config.yml
     dest: /etc/kubelet/config.yml
     mode: "0444"
-  notify: restart kubelet
+  notify: Restart kubelet
 
-- name: ship kubelet systemd unit
+- name: Ship kubelet systemd unit
   ansible.builtin.template:
     src: kubelet.service
     dest: /etc/systemd/system/kubelet.service
     mode: "0444"
-  notify: restart kubelet
+  notify: Restart kubelet
 
-- name: enable kubelet service
+- name: Enable kubelet service
   ansible.builtin.systemd:
     name: kubelet
     enabled: true

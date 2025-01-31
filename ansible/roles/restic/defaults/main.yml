@@ -1,0 +1,6 @@
+restic_version: 0.17.3
+
+restic_dl_url: "https://github.com/restic/restic/releases/download/v{{ restic_version }}/restic_{{ restic_version }}_linux_{{ arch }}.bz2"
+restic_sha256: "sha256:https://github.com/restic/restic/releases/download/v{{ restic_version }}/SHA256SUMS"
+
+restic_backup_dirs: []

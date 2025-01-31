@@ -1,0 +1,7 @@
+---
+- name: Perform backups with restic
+  hosts:
+    - pi4-r01-s06
+  become: true
+  roles:
+    - restic

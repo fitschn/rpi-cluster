@@ -1,0 +1,12 @@
+- name: Enable systemd services
+  ansible.builtin.systemd:
+    name: restic.timer
+    enabled: true
+    state: started
+    daemon_reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Remove restic download
+  ansible.builtin.file:
+    path: /tmp/restic-{{ restic_version }}.bz2
+    state: absent

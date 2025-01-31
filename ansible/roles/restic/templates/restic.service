@@ -1,0 +1,17 @@
+{{ ansible_managed | comment }}
+[Unit]
+Description=Backup with restic
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+Type=oneshot
+LoadCredential=aws_access_key:/etc/restic/aws_access_key
+LoadCredential=aws_secret_key:/etc/restic/aws_secret_key
+LoadCredential=restic_pass:/etc/restic/restic_pass
+LoadCredential=restic_repo:/etc/restic/restic_repo
+
+ExecStart=/usr/local/sbin/restic backup
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+[Unit]
+Description=Activate dartlight via Philips Hue
+Wants=network-online.target
+After=network.target network-online.target
+StartLimitBurst=5
+StartLimitIntervalSec=60
+
+[Service]
+Type=oneshot
+LoadCredential=hue_user_id:/etc/dartlight/hue_user_id
+ExecStart=/usr/local/bin/dartlight start Dartbeleuchtung
+ExecStop=/usr/local/bin/dartlight stop Dartbeleuchtung
+RemainAfterExit=yes
+Restart=on-failure
+RestartSec=5s
+# If DynamicUser is enabled, LoadCredential isn't available for ExecStop task
+# DynamicUser=yes
+
+[Install]
+WantedBy=multi-user.target

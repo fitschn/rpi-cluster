@@ -7,6 +7,12 @@
 - name: Disable swap file
   ansible.builtin.include_tasks: swap.yml
 
+- name: Install essential packages
+  ansible.builtin.apt:
+    pkg:
+      - jq
+      - vim
+
 - name: Update cmdline.txt
   ansible.builtin.include_tasks: cmdline.yml
   when:

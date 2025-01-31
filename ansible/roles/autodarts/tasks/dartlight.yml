@@ -1,0 +1,41 @@
+- name: Create directories
+  ansible.builtin.file:
+    path: /etc/dartlight
+    state: directory
+    mode: 0700
+    owner: root
+    group: root
+
+- name: Ship hue credentials
+  ansible.builtin.copy:
+    dest: /etc/dartlight/hue_user_id
+    content: "{{ hue_creds.pi5_autodarts.user}}"
+    mode: "0400"
+    owner: root
+    group: root
+  no_log: true
+
+- name: Deploy dartlight script
+  ansible.builtin.copy:
+    dest: /usr/local/bin/dartlight
+    src: dartlight.sh
+    mode: "0755"
+    owner: root
+    group: root
+
+- name: Deploy dartlight systemd service
+  ansible.builtin.template:
+    dest: /etc/systemd/system/dartlight.service
+    src: dartlight.service
+    mode: "0644"
+    owner: root
+    group: root
+  notify: Restart dartlight
+
+- name: Enable dartlight service
+  ansible.builtin.systemd:
+    name: dartlight
+    enabled: true
+    daemon_reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+

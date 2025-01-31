@@ -1,0 +1,6 @@
+---
+- name: Install autodarts
+  hosts: pi5-autodarts
+  become: true
+  roles:
+    - autodarts

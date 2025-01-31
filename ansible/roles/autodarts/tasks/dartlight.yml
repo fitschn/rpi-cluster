@@ -2,14 +2,14 @@
   ansible.builtin.file:
     path: /etc/dartlight
     state: directory
-    mode: 0700
+    mode: "0700"
     owner: root
     group: root
 
 - name: Ship hue credentials
   ansible.builtin.copy:
     dest: /etc/dartlight/hue_user_id
-    content: "{{ hue_creds.pi5_autodarts.user}}"
+    content: "{{ hue_creds.pi5_autodarts.user }}"
     mode: "0400"
     owner: root
     group: root
@@ -38,4 +38,3 @@
     enabled: true
     daemon_reload: true
   ignore_errors: "{{ ansible_check_mode }}"
-

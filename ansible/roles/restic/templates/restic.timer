@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+[Unit]
+Description=Restic backup timer
+
+[Timer]
+OnCalendar=04:00
+Unit=restic.service
+
+[Install]
+WantedBy=timers.target

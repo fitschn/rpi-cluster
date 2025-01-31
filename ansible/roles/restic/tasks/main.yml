@@ -1,0 +1,105 @@
+- name: Create directories for restic
+  ansible.builtin.file:
+    name: "{{ item }}"
+    state: directory
+    mode: "0750"
+    owner: root
+    group: root
+  loop:
+    - /etc/restic
+    - /opt/restic
+
+- name: Check restic version
+  ansible.builtin.command:
+    cmd: /opt/restic/restic version
+  register: restic_version_deployed
+  changed_when: false
+  ignore_errors: true
+  check_mode: false # Check always the version, to make sure the variable is created
+
+- name: Download restic
+  ansible.builtin.get_url:
+    url: "{{ restic_dl_url }}"
+    dest: "/tmp/restic-{{ restic_version }}.bz2"
+    checksum: "{{ restic_sha256 }}"
+    mode: "0444"
+  register: restic_download_task
+  notify: Remove restic download
+  when: >
+    restic_version_deployed.failed or
+    not (restic_version + " ") in restic_version_deployed.stdout
+
+- name: Unpack restic
+  ansible.builtin.shell:
+    cmd: "bzip2 -cd /tmp/restic-{{ restic_version }}.bz2 > /opt/restic/restic"
+  when: restic_download_task.changed # noqa: no-handler
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Make sure, permissions are correct
+  ansible.builtin.file:
+    dest: /opt/restic/restic
+    mode: "0755"
+    owner: root
+    group: root
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Ship credentials
+  ansible.builtin.copy:
+    dest: "/etc/restic/{{ item.file }}"
+    content: "{{ item.content }}"
+    mode: "0400"
+    owner: root
+    group: root
+  no_log: true
+  with_items:
+    - { file: restic_pass, content: "{{ restic_creds.restic_pass }}" }
+    - { file: restic_repo, content: "{{ restic_creds.restic_repo }}" }
+    - { file: aws_access_key, content: "{{ restic_creds.aws_access_key }}" }
+    - { file: aws_secret_key, content: "{{ restic_creds.aws_secret_key }}" }
+
+- name: Ship backup settings
+  ansible.builtin.copy:
+    dest: "/etc/restic/{{ item.file }}"
+    content: |
+      {{ item.content }}
+    mode: "0440"
+    owner: root
+    group: root
+  with_items:
+    - { file: backup_files_list, content: "{{ restic_backup_dirs | join('\n') }}" }
+
+- name: Deploy backup script
+  ansible.builtin.copy:
+    dest: /usr/local/sbin/restic
+    src: restic.sh
+    mode: "0755"
+    owner: root
+    group: root
+
+- name: Deploy systemd services
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    mode: "0644"
+    owner: root
+    group: root
+  notify: Enable systemd services
+  loop:
+    - restic.service
+    - restic.timer
+
+- name: Initialize repo
+  ansible.builtin.command:
+    cmd: "/opt/restic/restic init"
+  environment:
+    RESTIC_REPOSITORY: "{{ restic_creds.restic_repo }}"
+    RESTIC_PASSWORD: "{{ restic_creds.restic_pass }}"
+    AWS_ACCESS_KEY_ID: "{{ restic_creds.aws_access_key }}"
+    AWS_SECRET_ACCESS_KEY: "{{ restic_creds.aws_secret_key }}"
+  register: restic_init
+  changed_when: "'created restic repository' in restic_init.stdout"
+  failed_when:
+    - restic_init.rc != 0
+    - not 'config file already exists' in restic_init.stderr
+    - not 'config already initialized' in restic_init.stderr
+    - not 'config already exists' in restic_init.stderr

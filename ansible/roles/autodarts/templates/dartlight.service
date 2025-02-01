@@ -2,6 +2,7 @@
 Description=Activate dartlight via Philips Hue
 Wants=network-online.target
 After=network.target network-online.target
+Before=autodarts.service
 StartLimitBurst=5
 StartLimitIntervalSec=60
 

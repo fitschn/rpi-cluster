@@ -89,6 +89,20 @@
     - restic.service
     - restic.timer
 
+- name: Check, if repo is already initialized
+  ansible.builtin.command:
+    cmd: "/opt/restic/restic cat config"
+  environment:
+    RESTIC_REPOSITORY: "{{ restic_creds.restic_repo }}"
+    RESTIC_PASSWORD: "{{ restic_creds.restic_pass }}"
+    AWS_ACCESS_KEY_ID: "{{ restic_creds.aws_access_key }}"
+    AWS_SECRET_ACCESS_KEY: "{{ restic_creds.aws_secret_key }}"
+  register: restic_repo_check
+  changed_when: false
+  failed_when:
+    - restic_repo_check.rc != 0
+    - restic_repo_check.rc != 10
+
 - name: Initialize repo
   ansible.builtin.command:
     cmd: "/opt/restic/restic init"
@@ -99,8 +113,4 @@
     AWS_SECRET_ACCESS_KEY: "{{ restic_creds.aws_secret_key }}"
   register: restic_init
   changed_when: "'created restic repository' in restic_init.stdout"
-  failed_when:
-    - restic_init.rc != 0
-    - not 'config file already exists' in restic_init.stderr
-    - not 'config already initialized' in restic_init.stderr
-    - not 'config already exists' in restic_init.stderr
+  when: restic_repo_check.rc == 10

@@ -33,6 +33,7 @@
   ansible.builtin.shell:
     cmd: "bzip2 -cd /tmp/restic-{{ restic_version }}.bz2 > /opt/restic/restic"
   when: restic_download_task.changed # noqa: no-handler
+  changed_when: true
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Make sure, permissions are correct

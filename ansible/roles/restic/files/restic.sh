@@ -5,11 +5,15 @@ set -o errexit
 
 CMD="$1" # start / stop
 
-export RESTIC_REPOSITORY=$(cat "$CREDENTIALS_DIRECTORY/restic_repo")
-export RESTIC_PASSWORD=$(cat "$CREDENTIALS_DIRECTORY/restic_pass")
-export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/aws_access_key")
-export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/aws_secret_key")
+RESTIC_REPOSITORY=$(cat "$CREDENTIALS_DIRECTORY/restic_repo")
+RESTIC_PASSWORD=$(cat "$CREDENTIALS_DIRECTORY/restic_pass")
+AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/aws_access_key")
+AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/aws_secret_key")
 
+export RESTIC_REPOSITORY
+export RESTIC_PASSWORD
+export AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY
 
 # start / stop light
 case $CMD in

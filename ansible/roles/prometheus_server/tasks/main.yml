@@ -20,17 +20,6 @@
     mode: '0440'
   notify: Reload prometheus
 
-- name: Ship alerting rules
-  ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: "/etc/prometheus/rules/"
-    owner: root
-    group: root
-    mode: '0444'
-  with_fileglob:
-    - ../files/rules/*.yml
-  notify: Reload prometheus
-
 - name: Deploy container manifest
   ansible.builtin.template:
     src: prometheus.yml

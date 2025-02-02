@@ -115,7 +115,7 @@
   "panels": [
     {
       "collapsed": true,
-      "datasource": "PBF011F96B582B511",
+      "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -126,7 +126,7 @@
       "panels": [
         {
           "columns": [],
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "description": "Partition utilization, disk read, disk write, download bandwidth, upload bandwidth, if there are multiple network cards or multiple partitions, it is the value of the network card or partition with the highest utilization rate collected.\n\nCurrEstab: The number of TCP connections whose current status is ESTABLISHED or CLOSE-WAIT.",
           "fontSize": "80%",
           "gridPos": {
@@ -617,7 +617,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "decimals": null,
           "description": "",
           "fieldConfig": {
@@ -776,7 +776,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "decimals": 1,
           "fieldConfig": {
             "defaults": {
@@ -921,7 +921,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "decimals": 1,
           "description": "",
           "fieldConfig": {
@@ -1066,7 +1066,7 @@
     },
     {
       "collapsed": true,
-      "datasource": "PBF011F96B582B511",
+      "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1077,7 +1077,7 @@
       "panels": [
         {
           "cacheTimeout": null,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1158,7 +1158,7 @@
           "type": "stat"
         },
         {
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1265,7 +1265,7 @@
         },
         {
           "columns": [],
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "description": "In this kanban: the total disk, usage, available, and usage rate are consistent with the values of the Size, Used, Avail, and Use% columns of the df command, and the value of Use% will be rounded to one decimal place, which will be more accurate .\n\nNote: The Use% algorithm in df is: (size-free) * 100 / (avail + (size-free)), the result is divisible by this value, non-divisible by this value is +1, and the unit of the result is %.\nRefer to the df command source code:",
           "fontSize": "80%",
           "gridPos": {
@@ -1468,7 +1468,7 @@
         },
         {
           "cacheTimeout": null,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1563,7 +1563,7 @@
           "bars": true,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "editable": true,
           "error": false,
           "fieldConfig": {
@@ -1686,7 +1686,7 @@
         },
         {
           "cacheTimeout": null,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1765,7 +1765,7 @@
         },
         {
           "cacheTimeout": null,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1844,7 +1844,7 @@
         },
         {
           "cacheTimeout": null,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1924,7 +1924,7 @@
         },
         {
           "cacheTimeout": null,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -2019,7 +2019,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "decimals": 2,
           "description": "",
           "fieldConfig": {
@@ -2182,7 +2182,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "decimals": 2,
           "fieldConfig": {
             "defaults": {
@@ -2368,7 +2368,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "decimals": 2,
           "fieldConfig": {
             "defaults": {
@@ -2496,7 +2496,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "decimals": 2,
           "editable": true,
           "error": false,
@@ -2650,7 +2650,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "decimals": 2,
           "description": "Per second read / write bytes ",
           "fieldConfig": {
@@ -2776,7 +2776,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "decimals": 1,
           "description": "",
           "fieldConfig": {
@@ -2903,7 +2903,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "decimals": 2,
           "description": "Read/write completions per second\n\nWrites completed: 每个磁盘分区每秒写完成次数\n\nIO now 每个磁盘分区每秒正在处理的输入/输出请求数",
           "fieldConfig": {
@@ -3052,7 +3052,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "decimals": null,
           "description": "The time spent on I/O in the natural time of each second.（wall-clock time）",
           "fieldConfig": {
@@ -3165,7 +3165,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "decimals": 2,
           "description": "Time spent on each read/write operation",
           "fieldConfig": {
@@ -3314,7 +3314,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "decimals": 2,
           "description": "Sockets_used - Sockets currently in use\n\nCurrEstab - TCP connections for which the current state is either ESTABLISHED or CLOSE- WAIT\n\nTCP_alloc - Allocated sockets\n\nTCP_tw - Sockets wating close\n\nUDP_inuse - Udp sockets currently in use\n\nRetransSegs - TCP retransmission packets\n\nOutSegs - Number of packets sent by TCP\n\nInSegs - Number of packets received by TCP",
           "fieldConfig": {
@@ -3514,7 +3514,7 @@
           "cacheTimeout": null,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBF011F96B582B511",
+          "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -4012,7 +4012,7 @@
       {
         "allValue": "",
         "current": {},
-        "datasource": "PBF011F96B582B511",
+        "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
         "definition": "label_values(origin_prometheus)",
         "description": null,
         "error": null,
@@ -4038,7 +4038,7 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "PBF011F96B582B511",
+        "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
         "definition": "label_values(node_uname_info{origin_prometheus=~\"$origin_prometheus\"}, job)",
         "description": null,
         "error": null,
@@ -4064,7 +4064,7 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "PBF011F96B582B511",
+        "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
         "definition": "label_values(node_uname_info{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"}, nodename)",
         "description": null,
         "error": null,
@@ -4091,7 +4091,7 @@
         "allFormat": "glob",
         "allValue": null,
         "current": {},
-        "datasource": "PBF011F96B582B511",
+        "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
         "definition": "label_values(node_uname_info{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",nodename=~\"$hostname\"},instance)",
         "description": null,
         "error": null,
@@ -4119,7 +4119,7 @@
         "allFormat": "glob",
         "allValue": null,
         "current": {},
-        "datasource": "PBF011F96B582B511",
+        "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
         "definition": "label_values(node_network_info{origin_prometheus=~\"$origin_prometheus\",device!~'tap.*|veth.*|br.*|docker.*|virbr.*|lo.*|cni.*'},device)",
         "description": null,
         "error": null,
@@ -4203,7 +4203,7 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "PBF011F96B582B511",
+        "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
         "definition": "query_result(topk(1,sort_desc (max(node_filesystem_size_bytes{origin_prometheus=~\"$origin_prometheus\",instance=~'$node',fstype=~\"ext.?|xfs\",mountpoint!~\".*pods.*\"}) by (mountpoint))))",
         "description": null,
         "error": null,
@@ -4229,7 +4229,7 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "PBF011F96B582B511",
+        "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
         "definition": "label_values(node_uname_info{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",instance=~\"$node\"}, nodename)",
         "description": null,
         "error": null,
@@ -4255,7 +4255,7 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "PBF011F96B582B511",
+        "datasource": "240D4F2C-75C1-4508-B4AB-D13888D1F841",
         "definition": "query_result(count(node_uname_info{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"}))",
         "description": null,
         "error": null,

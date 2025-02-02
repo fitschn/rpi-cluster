@@ -1,0 +1,12 @@
+- name: Restart mimir
+  ansible.builtin.shell:
+    cmd: "crictl stop $(crictl ps -q --name mimir) && crictl rm $(crictl ps -a -q --name mimir)"
+  changed_when: true
+
+- name: Check mimir
+  ansible.builtin.wait_for:
+    port: 9009
+    host: "{{ ansible_host }}"
+    delay: 10
+    timeout: 60
+  ignore_errors: "{{ ansible_check_mode }}"

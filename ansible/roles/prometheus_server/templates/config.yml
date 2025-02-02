@@ -2,8 +2,12 @@
 global:
   scrape_interval: 30s
 
-rule_files:
-  - '/etc/prometheus/rules/*.yml'
+remote_write:
+  - url: http://mimir.ohr-mit-n.net:9009/api/v1/push
+
+storage:
+  tsdb:
+    out_of_order_time_window: 10s
 
 #alerting:
 #  alertmanagers:

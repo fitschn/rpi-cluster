@@ -1,0 +1,8 @@
+groups:
+  - name: heartbeat.rules
+    rules:
+      - alert: MonitoringHeartbeatAlert
+        expr: 1
+        for: 1s
+        labels:
+          severity: heartbeat

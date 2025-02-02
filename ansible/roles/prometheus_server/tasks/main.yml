@@ -8,7 +8,6 @@
   loop:
     - /etc/prometheus
     - /etc/prometheus/targets
-    - /etc/prometheus/rules
     - /opt/prometheus/data
 
 - name: Deploy prometheus config files and reload prometheus

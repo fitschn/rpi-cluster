@@ -28,12 +28,11 @@
 
 - name: Add prometheus datasources
   ansible.builtin.template:
-    src: "datasources/prometheus.yml"
-    dest: "/etc/grafana/provisioning/datasources/{{ item.url | urlsplit('hostname') }}.yml"
+    src: "datasource.yml"
+    dest: "/etc/grafana/provisioning/datasources/config.yml"
     owner: 472
     group: 472
     mode: '0440'
-  loop: '{{ grafana_ds_prometheus }}'
   notify: Restart grafana
 
 - name: Add dashboard datasources

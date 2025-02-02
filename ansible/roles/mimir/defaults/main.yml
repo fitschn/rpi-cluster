@@ -1,0 +1,2 @@
+mimir_version: 2.15.0
+mimir_image: "grafana/mimir:{{ mimir_version }}"

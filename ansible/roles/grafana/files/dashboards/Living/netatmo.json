@@ -30,7 +30,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBF011F96B582B511"
+        "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
       },
       "fieldConfig": {
         "defaults": {
@@ -80,7 +80,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -97,7 +97,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBF011F96B582B511"
+        "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
       },
       "description": "",
       "fieldConfig": {
@@ -145,7 +145,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -164,7 +164,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBF011F96B582B511"
+        "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
       },
       "description": "",
       "fieldConfig": {
@@ -212,7 +212,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "builder",
           "exemplar": false,
@@ -242,7 +242,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBF011F96B582B511"
+        "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
       },
       "description": "",
       "fieldConfig": {
@@ -328,7 +328,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "builder",
           "expr": "netatmo_sensor_temperature_celsius{module=\"Terrasse\"}",
@@ -343,7 +343,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBF011F96B582B511"
+        "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
       },
       "gridPos": {
         "h": 12,
@@ -405,7 +405,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "builder",
           "expr": "netatmo_sensor_wind_direction_degrees{module=\"Windmesser\"}",
@@ -416,7 +416,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "code",
           "expr": "netatmo_sensor_wind_strength_kph{module=\"Windmesser\"}",
@@ -434,7 +434,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBF011F96B582B511"
+        "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
       },
       "description": "",
       "fieldConfig": {
@@ -520,7 +520,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "builder",
           "expr": "netatmo_sensor_humidity_percent{module=\"Terrasse\"}",
@@ -535,7 +535,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBF011F96B582B511"
+        "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
       },
       "description": "",
       "fieldConfig": {
@@ -625,7 +625,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "code",
           "expr": "netatmo_sensor_rain_amount_mm{module=\"Regenmesser\"}",
@@ -653,7 +653,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBF011F96B582B511"
+        "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
       },
       "description": "",
       "fieldConfig": {
@@ -739,7 +739,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "builder",
           "expr": "netatmo_sensor_temperature_celsius{module=\"Wohnzimmer\"}",
@@ -754,7 +754,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBF011F96B582B511"
+        "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
       },
       "description": "",
       "fieldConfig": {
@@ -848,7 +848,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "builder",
           "expr": "netatmo_sensor_co2_ppm{module=\"Wohnzimmer\"}",
@@ -864,7 +864,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBF011F96B582B511"
+        "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
       },
       "description": "",
       "fieldConfig": {
@@ -950,7 +950,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "builder",
           "expr": "netatmo_sensor_humidity_percent{module=\"Wohnzimmer\"}",
@@ -965,7 +965,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBF011F96B582B511"
+        "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
       },
       "description": "",
       "fieldConfig": {
@@ -1047,7 +1047,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "builder",
           "expr": "netatmo_sensor_noise_db{module=\"Wohnzimmer\"}",
@@ -1076,7 +1076,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBF011F96B582B511"
+        "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
       },
       "description": "",
       "fieldConfig": {
@@ -1162,7 +1162,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "builder",
           "expr": "netatmo_sensor_temperature_celsius{module=\"Schlafzimmer\"}",
@@ -1177,7 +1177,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBF011F96B582B511"
+        "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
       },
       "description": "",
       "fieldConfig": {
@@ -1271,7 +1271,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "builder",
           "expr": "netatmo_sensor_co2_ppm{module=\"Schlafzimmer\"}",
@@ -1287,7 +1287,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBF011F96B582B511"
+        "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
       },
       "description": "",
       "fieldConfig": {
@@ -1373,7 +1373,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBF011F96B582B511"
+            "uid": "240D4F2C-75C1-4508-B4AB-D13888D1F841"
           },
           "editorMode": "builder",
           "expr": "netatmo_sensor_humidity_percent{module=\"Schlafzimmer\"}",

@@ -1,0 +1,73 @@
+# vim: ft=yaml
+{{ ansible_managed | comment }}
+
+# Disable the requirement that every request to Mimir has a
+# X-Scope-OrgID header. `anonymous` will be substituted in instead.
+multitenancy_enabled: false
+
+common:
+  storage:
+    s3:
+      endpoint: hel1.your-objectstorage.com
+      region: hel
+      access_key_id: {{ mimir_creds.aws_access_key }}
+      secret_access_key: {{ mimir_creds.aws_secret_key }}
+
+server:
+  http_listen_port: 9009
+
+  # Configure the server to allow messages up to 100MB.
+  grpc_server_max_recv_msg_size: 104857600
+  grpc_server_max_send_msg_size: 104857600
+  grpc_server_max_concurrent_streams: 1000
+
+distributor:
+  ring:
+    kvstore:
+      store: memberlist
+  pool:
+    health_check_ingesters: true
+
+ingester:
+  ring:
+    min_ready_duration: 0s
+    final_sleep: 0s
+    num_tokens: 512
+
+    kvstore:
+      store: inmemory
+    replication_factor: 1
+
+blocks_storage:
+  backend: s3
+  s3:
+    bucket_name: pimimir-metrics
+  tsdb:
+    dir: /data/tsdb/
+  bucket_store:
+    sync_dir: /data/tsdb-sync
+
+compactor:
+  data_dir: /data/compactor
+
+ruler:
+  evaluation_interval: 1m
+  poll_interval: 1m
+  alertmanager_url: http://mimir.ohr-mit-n.net:9009/alertmanager
+
+ruler_storage:
+  backend: local
+  local:
+    directory: /data/rules
+
+alertmanager:
+  external_url: http://mimir.ohr-mit-n.net:9009/alertmanager
+  fallback_config_file: /etc/mimir/alertmanager.yml
+
+alertmanager_storage:
+  backend: filesystem
+  filesystem:
+    dir: /data/alerts
+
+limits:
+  compactor_blocks_retention_period: 3y

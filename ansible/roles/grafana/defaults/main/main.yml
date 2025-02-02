@@ -1,5 +1,20 @@
-grafana_version: 11.4.0
+grafana_version: 11.5.0
 
-grafana_ds_prometheus:
-  - name: 'Prometheus'
-    url: 'http://prometheus.ohr-mit-n.net:9090'
+grafana_datasources:
+  - name: "Prometheus"
+    type: "prometheus"
+    url: "http://mimir.ohr-mit-n.net:9009/prometheus"
+    uuid: "240D4F2C-75C1-4508-B4AB-D13888D1F841"
+    default: true
+    json_data:
+      httpMethod: "POST"
+      manageAlerts: true
+      prometheusType: "Mimir"
+      prometheusVersion: "2.9.1"
+  - name: "Alertmanager"
+    type: "alertmanager"
+    url: "http://mimir.ohr-mit-n.net:9009/alertmanager"
+    uuid: "79C52B9D-E8C8-4A48-AF7D-6A1869EE883B"
+    default: false
+    json_data:
+      implementation: "prometheus"

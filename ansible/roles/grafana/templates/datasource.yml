@@ -1,0 +1,21 @@
+{{ ansible_managed | comment }}
+apiVersion: 1
+
+datasources:
+{% for item in grafana_datasources %}
+- name: '{{ item.name }}'
+  type: '{{ item.type }}'
+  orgId: 1
+  url: '{{ item.url }}'
+  editable: false
+  isDefault: {{ item.default | default("false") }}
+  uid: {{ item.uuid }}
+{% if item.json_data is defined %}
+  jsonData:
+    {{ item.json_data | to_nice_yaml(indent=2) | trim | indent(4)}}
+{% endif %}
+{% if item.secure_json_data is defined %}
+  secureJsonData:
+    {{ item.secure_json_data | to_nice_yaml(indent=2) | trim | indent(4)}}
+{% endif %}
+{% endfor %}

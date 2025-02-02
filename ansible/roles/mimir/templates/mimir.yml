@@ -1,0 +1,32 @@
+# vim: ft=yaml
+{{ ansible_managed | comment }}
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mimir
+  labels:
+    app.kubernetes.io/name: mimir
+    app.kubernetes.io/version: {{ mimir_version }}
+spec:
+  hostNetwork: true
+  containers:
+    - name: mimir
+      image: {{ mimir_image }}
+      args:
+        - -config.file=/etc/mimir/config.yml
+        - -target=all,alertmanager
+      volumeMounts:
+        - name: mimir-data
+          mountPath: /data
+        - name: mimir-config
+          mountPath: /etc/mimir
+  volumes:
+    - name: mimir-config
+      hostPath:
+        path: /etc/mimir
+        type: Directory
+    - name: mimir-data
+      hostPath:
+        path: /opt/mimir/data
+        type: Directory

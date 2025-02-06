@@ -1,1 +1,14 @@
 mosquitto_version: 2.0.20
+
+mqtt_salt: "{{ lookup('community.general.bitwarden_secrets_manager', 'e4e3f9f5-dcd1-4f25-80cb-b27a00d0fa48').value }}" 
+
+mqtt_accounts:
+  wallbox:
+    username: "{{ lookup('community.general.bitwarden_secrets_manager', '65a429d6-d23b-4e74-b87c-b27a00d1c2d4').value }}"
+    password: "{{ lookup('community.general.bitwarden_secrets_manager', 'ed265d1e-49f3-4b16-bd8a-b27a00d1ee17').value }}"
+  tasmota:
+    username: "{{ lookup('community.general.bitwarden_secrets_manager', 'e1b60ebb-1b2c-4c28-bd5a-b27a00d24a20').value }}"
+    password: "{{ lookup('community.general.bitwarden_secrets_manager', '273955b2-1210-4534-baec-b27a00d260dd').value }}"
+  exporter:
+    username: "{{ lookup('community.general.bitwarden_secrets_manager', '6579043d-ed72-4776-a8e5-b27a00d2132d').value }}"
+    password: "{{ lookup('community.general.bitwarden_secrets_manager', 'dcc0b16e-41ac-43f0-a538-b27a00d22835').value }}"

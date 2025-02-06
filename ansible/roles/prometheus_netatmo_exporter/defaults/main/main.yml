@@ -1,1 +1,5 @@
 netatmo_exporter_version: 2.1.1
+
+netatmo:
+  client_id: "{{ lookup('community.general.bitwarden_secrets_manager', '4fd11f31-3528-4da0-b3a9-b27a00c786be').value }}"
+  client_secret: "{{ lookup('community.general.bitwarden_secrets_manager', '77881981-b288-49a6-af73-b27a00c79c5f').value }}"

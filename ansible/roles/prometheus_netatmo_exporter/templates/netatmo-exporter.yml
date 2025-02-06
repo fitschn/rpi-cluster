@@ -18,9 +18,9 @@ spec:
         - name: NETATMO_EXPORTER_ADDR
           value: "{{ ansible_host }}:9210"
         - name: NETATMO_CLIENT_ID
-          value: "{{ netatmo_client_id }}"
+          value: "{{ netatmo.client_id }}"
         - name: NETATMO_CLIENT_SECRET
-          value: "{{ netatmo_client_secret }}"
+          value: "{{ netatmo.client_secret }}"
         - name: NETATMO_EXPORTER_EXTERNAL_URL
           value: "http://{{ ansible_host }}:9210"
         - name: NETATMO_EXPORTER_TOKEN_FILE

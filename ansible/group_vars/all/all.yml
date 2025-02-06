@@ -1,2 +1,10 @@
 custom_arch: "{{ (ansible_architecture == 'aarch64') | ternary('arm64', 'amd64') }}"
 arch: "{{ custom_arch }}"
+
+cloudflare_api_token: "{{ lookup('community.general.bitwarden_secrets_manager', 'f9199723-2296-4480-befd-b27a0096e91d').value }}"
+
+restic_creds:
+  aws_access_key: "{{ lookup('community.general.bitwarden_secrets_manager', '1085f458-d140-4626-a435-b27a00b72a17').value }}"
+  aws_secret_key: "{{ lookup('community.general.bitwarden_secrets_manager', '64196bfc-0cfd-4cb5-a84c-b27a00b73cbd').value }}"
+  restic_pass: "{{ lookup('community.general.bitwarden_secrets_manager', '90d18fec-fc90-46c6-9cd7-b27a00b5f581').value }}"
+  restic_repo: "{{ lookup('community.general.bitwarden_secrets_manager', '51dab03f-6035-4e42-a960-b27a00b7975e').value }}"

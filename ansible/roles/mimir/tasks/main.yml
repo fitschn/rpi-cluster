@@ -22,6 +22,7 @@
     - Restart mimir
     - Check mimir
   ignore_errors: "{{ ansible_check_mode }}"
+  no_log: true
   loop:
     - config.yml
     - alertmanager.yml

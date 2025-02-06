@@ -1,1 +1,6 @@
 mqtt_exporter_version: 1.6.1
+
+mqtt_accounts:
+  exporter:
+    username: "{{ lookup('community.general.bitwarden_secrets_manager', '6579043d-ed72-4776-a8e5-b27a00d2132d').value }}"
+    password: "{{ lookup('community.general.bitwarden_secrets_manager', 'dcc0b16e-41ac-43f0-a538-b27a00d22835').value }}"

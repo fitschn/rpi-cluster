@@ -1,0 +1,34 @@
+{{ ansible_managed | comment }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hp-scan
+  labels:
+    role: hp-scan
+spec:
+  hostNetwork: true
+  containers:
+    - name: hp-scan
+      image: manuc66/node-hp-scan-to:master # no versioning available at the moment
+      volumeMounts:
+        - mountPath: /scans
+          name: paperless-consume
+      env:
+        - name: PUID
+          value: "{{ paperless_user.uid | default(1100) }}"
+        - name: PGID
+          value: "{{ paperless_user.group | default(1100) }}"
+        - name: IP
+          value: printer.fritz.box
+        - name: PATTERN
+          value: '"scan"_dd.mm.yyyy_hh:MM:ss'
+        - name: DIR
+          value: /scans
+        - name: TZ
+          value: Europe/Berlin
+        - name: RESOLUTION
+          value: "300"
+  volumes:
+    - name: paperless-consume
+      hostPath:
+        path: /opt/paperless/consume

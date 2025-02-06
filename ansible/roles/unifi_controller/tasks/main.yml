@@ -43,6 +43,12 @@
     name: mongodb-org-server
     selection: hold
 
+- name: Make sure, mongodb service is started
+  ansible.builtin.systemd:
+    name: mongod.service
+    enabled: true
+    state: started
+
 - name: Install unifi network application
   ansible.builtin.package:
     name: unifi

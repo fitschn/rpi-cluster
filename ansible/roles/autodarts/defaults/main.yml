@@ -1,0 +1,4 @@
+# User creation: https://developers.meethue.com/develop/get-started-2/
+hue_creds:
+  pi5_autodarts:
+    user: "{{ lookup('community.general.bitwarden_secrets_manager', '653ff3ca-a3eb-4378-b590-b27a00ca66ee').value }}"

@@ -6,10 +6,16 @@
   import_playbook: playbooks/gas_meter.yml
 - name: Deploy unifi network application
   import_playbook: playbooks/unifi_controller.yml
+- name: Deploy redis
+  import_playbook: playbooks/redis.yml
+- name: Deploy paperless-ngx
+  import_playbook: playbooks/paperless_ngx.yml
 - name: Deploy mosquito MQTT server
   import_playbook: playbooks/mosquitto.yml
 - name: Deploy mqtt exporter
   import_playbook: playbooks/prometheus_mqtt_exporter.yml
+- name: Deploy mimir
+  import_playbook: playbooks/mimir.yml
 - name: Deploy prometheus server
   import_playbook: playbooks/prometheus_server.yml
 - name: Deploy grafana
@@ -20,3 +26,5 @@
   import_playbook: playbooks/prometheus_unifi_exporter.yml
 - name: Deploy netatmo exporter
   import_playbook: playbooks/prometheus_netatmo_exporter.yml
+- name: Deploy restic
+  import_playbook: playbooks/restic.yml

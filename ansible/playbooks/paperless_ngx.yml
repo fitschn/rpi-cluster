@@ -1,0 +1,6 @@
+---
+- name: Deploy paperless-ngx
+  hosts: pi4-r01-s06
+  become: true
+  roles:
+    - paperless_ngx

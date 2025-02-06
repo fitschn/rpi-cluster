@@ -1,0 +1,27 @@
+- name: Create directories for redis
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: 999 # redis user in container
+    group: 999 # redis group in container
+  loop:
+    - /opt/redis/data
+
+- name: Deploy container manifest
+  ansible.builtin.template:
+    src: redis.yml
+    dest: /opt/kubelet/manifests/redis.yml
+    owner: root
+    group: root
+    mode: "0440"
+
+- name: Wait for container to come up
+  ansible.builtin.command:
+    cmd: crictl ps -q --name redis
+  register: redis_container
+  until: redis_container.stdout != ""
+  delay: 10
+  retries: 100
+  changed_when: false
+  when: not ansible_check_mode

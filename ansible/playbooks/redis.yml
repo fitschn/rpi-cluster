@@ -1,0 +1,6 @@
+---
+- name: Deploy redis server
+  hosts: pi4-r01-s06
+  become: true
+  roles:
+    - redis

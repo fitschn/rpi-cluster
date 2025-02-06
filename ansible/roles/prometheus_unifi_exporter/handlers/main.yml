@@ -3,7 +3,7 @@
     cmd: |
       crictl stop $(crictl ps --name unifi-exporter -q) && \
       crictl rm $(crictl ps -a --name unifi-exporter -q)
-  notify: wait for unifi-exporter
+  notify: Wait for unifi-exporter
   changed_when: true
 
 - name: Wait for unifi-exporter

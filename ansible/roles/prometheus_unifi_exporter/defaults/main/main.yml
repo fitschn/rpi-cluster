@@ -1,1 +1,5 @@
 unifi_exporter_version: v2.14.1
+
+unifi_monitoring:
+  user: "{{ lookup('community.general.bitwarden_secrets_manager', '1fe07e50-f634-4561-b171-b27a00bcc718').value }}"
+  pass: "{{ lookup('community.general.bitwarden_secrets_manager', '5a4d6f1a-54e1-43a4-aa99-b27a00bc928a').value }}"

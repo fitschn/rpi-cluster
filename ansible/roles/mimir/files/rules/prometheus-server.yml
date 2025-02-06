@@ -2,7 +2,7 @@ groups:
   - name: prometheus-server.rules
     rules:
       - alert: PrometheusTargetMissing
-        expr: up == 0
+        expr: up{instance!~"10.20.30.98.*"} == 0
         for: 5m
         labels:
           severity: P3

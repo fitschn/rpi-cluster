@@ -24,6 +24,7 @@
     mode: '0440'
   loop:
     - grafana.ini
+  no_log: true
   notify: Restart grafana
 
 - name: Add prometheus datasources

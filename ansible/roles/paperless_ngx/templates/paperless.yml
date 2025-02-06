@@ -1,0 +1,57 @@
+{{ ansible_managed | comment }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: paperless
+  labels:
+    role: paperless
+spec:
+  hostNetwork: true
+  containers:
+    - name: paperless
+      image: ghcr.io/paperless-ngx/paperless-ngx:{{ paperless_version }}
+      volumeMounts:
+        - mountPath: /usr/src/paperless/data
+          name: paperless-data
+        - mountPath: /usr/src/paperless/media
+          name: paperless-media
+        - mountPath: /usr/src/paperless/export
+          name: paperless-export
+        - mountPath: /usr/src/paperless/consume
+          name: paperless-consume
+      env:
+        - name: "PAPERLESS_REDIS"
+          value: "redis://127.0.0.1:6379"
+        - name: "USERMAP_UID"
+          value: "{{ paperless_user.uid | default(1100) }}"
+        - name: "USERMAP_GID"
+          value: "{{ paperless_user.group | default(1100) }}"
+        - name: "PAPERLESS_URL"
+          value: "http://paperless.ohr-mit-n.net:8000"
+        - name: "PAPERLESS_SECRET_KEY"
+          value: "{{ paperless.secret_key }}"
+        - name: "PAPERLESS_TIME_ZONE"
+          value: "Europe/Berlin"
+        - name: "PAPERLESS_OCR_LANGUAGE"
+          value: "deu"
+        - name: "PAPERLESS_CONSUMER_ENABLE_BARCODES"
+          value: "true"
+        - name: "PAPERLESS_CONSUMER_ENABLE_ASN_BARCODE"
+          value: "true"
+        - name: "PAPERLESS_ADMIN_USER"
+          value: "{{ paperless.admin_user }}"
+        - name: "PAPERLESS_ADMIN_PASSWORD"
+          value: "{{ paperless.admin_pass }}"
+  volumes:
+    - name: paperless-data
+      hostPath:
+        path: /opt/paperless/data
+    - name: paperless-media
+      hostPath:
+        path: /opt/paperless/media
+    - name: paperless-export
+      hostPath:
+        path: /opt/paperless/export
+    - name: paperless-consume
+      hostPath:
+        path: /opt/paperless/consume

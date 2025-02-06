@@ -1,2 +1,11 @@
 mimir_version: 2.15.0
 mimir_image: "grafana/mimir:{{ mimir_version }}"
+
+mimir_creds:
+  aws_access_key: "{{ lookup('community.general.bitwarden_secrets_manager', '9eed42a0-f913-4ea4-9919-b27a00bea996').value }}"
+  aws_secret_key: "{{ lookup('community.general.bitwarden_secrets_manager', 'b6f597ef-d2c8-4a21-b062-b27a00bebfab').value }}"
+
+alertmanager:
+  pushover_user_key: "{{ lookup('community.general.bitwarden_secrets_manager', '71554829-a9f4-4873-b0b1-b27a00c185e6').value }}"
+  pushover_token: "{{ lookup('community.general.bitwarden_secrets_manager', '212f2202-a943-4e29-8cd3-b27a00c1f95b').value }}"
+  healthcheck_uuid: "{{ lookup('community.general.bitwarden_secrets_manager', '11c9ec42-dfa2-44ba-b76b-b27a00c279d3').value }}"

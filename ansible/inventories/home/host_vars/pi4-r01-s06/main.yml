@@ -1,2 +1,2 @@
 restic_backup_dirs:
-  - /var/lib/unifi/backup
+  - /opt/paperless

@@ -1,5 +1,11 @@
 grafana_version: 11.5.0
 
+grafana_secret_key: "{{ lookup('community.general.bitwarden_secrets_manager', '15fbc648-3b6a-4391-9f02-b27a00c45be1').value }}"
+grafana_user:
+  admin:
+    user: "{{ lookup('community.general.bitwarden_secrets_manager', '1c455af5-b905-443b-9b48-b27a00c4805c').value }}"
+    pass: "{{ lookup('community.general.bitwarden_secrets_manager', 'c04c8c96-71b5-47a5-acf9-b27a00c4afe7').value }}"
+
 grafana_datasources:
   - name: "Prometheus"
     type: "prometheus"

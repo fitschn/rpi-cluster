@@ -18,9 +18,9 @@ export AWS_SECRET_ACCESS_KEY
 # start / stop light
 case $CMD in
   backup)
-    /opt/restic/restic backup --files-from /etc/restic/backup_files_list
-    /opt/restic/restic forget --keep-daily 5 --keep-weekly 1 --keep-monthly 1 --keep-yearly 1 --prune
-    /opt/restic/restic check
+    /opt/restic/restic backup --retry-lock 1h --files-from /etc/restic/backup_files_list
+    /opt/restic/restic forget --retry-lock 1h --keep-daily 5 --keep-weekly 1 --keep-monthly 1 --keep-yearly 1 --prune
+    /opt/restic/restic check --retry-lock 1h
     exit 0
   ;;
 

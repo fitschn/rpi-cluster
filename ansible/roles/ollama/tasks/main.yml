@@ -1,0 +1,53 @@
+- name: Create user
+  ansible.builtin.user:
+    name: "ollama"
+    home: "/opt/ollama"
+    system: true
+  register: ollama_user
+
+- name: Check deployed version
+  ansible.builtin.command:
+    cmd: /opt/ollama/bin/ollama --version
+  register: ollama_version_deployed
+  changed_when: false
+  ignore_errors: true
+  check_mode: false # Check always the version, to make sure the variable is created
+
+- name: Download ollama
+  ansible.builtin.get_url:
+    url: "{{ ollama_dl_url }}"
+    dest: "/tmp/ollama-{{ ollama_version }}.tar.gz"
+    checksum: "{{ ollama_sha256 }}"
+    mode: "0444"
+  register: ollama_download_task
+  notify: Remove ollama download
+  when: >
+    ollama_version_deployed.failed or
+    not (ollama_version | string)[1:] in ollama_version_deployed.stdout
+
+- name: Unpack ollama
+  ansible.builtin.unarchive:
+    dest: /opt/ollama
+    src: "/tmp/ollama-{{ ollama_version }}.tar.gz"
+    mode: u=rwX,g=rX,o=
+    owner: ollama
+    group: ollama
+    remote_src: true
+  when: ollama_download_task.changed # noqa: no-handler
+  notify: Restart ollama
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Ship systemd service
+  ansible.builtin.template:
+    src: ollama.service
+    dest: /etc/systemd/system/ollama.service
+    mode: "0444"
+  notify: Restart ollama
+
+- name: Enable ollama service
+  ansible.builtin.systemd:
+    name: ollama
+    enabled: true
+    state: started
+    daemon_reload: true
+  ignore_errors: "{{ ansible_check_mode }}"

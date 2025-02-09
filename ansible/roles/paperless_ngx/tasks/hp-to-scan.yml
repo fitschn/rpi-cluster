@@ -1,0 +1,18 @@
+- name: Deploy HP scan target
+  ansible.builtin.template:
+    src: hp_scan.yml
+    dest: /opt/kubelet/manifests/hp_scan.yml
+    owner: root
+    group: root
+    mode: "0440"
+  no_log: true
+
+- name: Wait for container to come up
+  ansible.builtin.command:
+    cmd: crictl ps -q --name hp-scan
+  register: hp_scan_container
+  until: hp_scan_container.stdout != ""
+  delay: 10
+  retries: 100
+  changed_when: false
+  when: not ansible_check_mode

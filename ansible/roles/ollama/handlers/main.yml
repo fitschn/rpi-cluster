@@ -1,0 +1,10 @@
+- name: Restart ollama
+  ansible.builtin.systemd:
+    name: ollama
+    state: restarted
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Remove ollama download
+  ansible.builtin.file:
+    path: /tmp/ollama-{{ ollama_version }}.tar.gz
+    state: absent

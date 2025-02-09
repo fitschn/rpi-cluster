@@ -19,3 +19,5 @@
     name: dphys-swapfile
     state: stopped
     enabled: false
+  when:
+    - ansible_distribution == "Debian"

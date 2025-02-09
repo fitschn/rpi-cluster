@@ -1,0 +1,8 @@
+---
+- name: Install ollama
+  hosts:
+    - htznr-ollama
+    - htznr-ollama-intel
+  become: true
+  roles:
+    - ollama

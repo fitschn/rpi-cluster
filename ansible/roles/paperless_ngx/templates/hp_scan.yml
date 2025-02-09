@@ -28,6 +28,8 @@ spec:
           value: Europe/Berlin
         - name: RESOLUTION
           value: "300"
+        - name: CMDLINE
+          value: "--health-check-port 3100"
   volumes:
     - name: paperless-consume
       hostPath:

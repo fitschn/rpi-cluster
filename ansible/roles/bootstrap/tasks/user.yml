@@ -4,6 +4,7 @@
     state: present
     groups: "{{ item.groups }}"
     append: true
+    shell: /bin/bash
   loop: "{{ users_create }}"
 
 - name: Add ssh public keys
@@ -22,3 +23,8 @@
     owner: root
     group: root
     validate: visudo -cf %s
+
+- name: Remove authorized keys file from root
+  ansible.builtin.file:
+    path: /root/.ssh/authorized_keys
+    state: absent

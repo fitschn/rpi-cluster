@@ -9,6 +9,7 @@
 
 - name: Install essential packages
   ansible.builtin.apt:
+    update_cache: true
     pkg:
       - jq
       - vim

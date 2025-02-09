@@ -27,7 +27,11 @@ spec:
         - --path.rootfs=/host
         - --path.procfs=/host/proc
         - --path.sysfs=/host/sys
+{% if ansible_host is ansible.utils.ipv4 %}
         - --web.listen-address={{ ansible_host }}:9100
+{% elif ansible_host is ansible.utils.ipv6 %}
+        - --web.listen-address=[{{ ansible_host }}]:9100
+{% endif %}
         - --collector.ntp.protocol-version=4
         - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|run)($|/)
         - --collector.textfile.directory=/host/opt/node-exporter/textfile-collector

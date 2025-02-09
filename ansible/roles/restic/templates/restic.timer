@@ -4,6 +4,8 @@ Description=Restic backup timer
 
 [Timer]
 OnCalendar=04:00
+RandomizedDelaySec=2h
+FixedRandomDelay=true
 Unit=restic.service
 
 [Install]

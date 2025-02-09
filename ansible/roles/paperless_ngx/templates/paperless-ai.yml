@@ -1,0 +1,28 @@
+{{ ansible_managed | comment }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: paperless-ai
+  labels:
+    role: paperless-ai
+spec:
+  hostNetwork: true
+  containers:
+    - name: paperless-ai
+      image: clusterzx/paperless-ai:{{ paperless_ai_version }}
+      volumeMounts:
+        - mountPath: /app/data
+          name: paperless-ai-data
+      env:
+        - name: "PUID"
+          value: "{{ paperless_user.uid | default(1100) }}"
+        - name: "PGID"
+          value: "{{ paperless_user.group | default(1100) }}"
+        - name: "PAPERLESS_API_URL"
+          value: "http://paperless.ohr-mit-n.net:8000"
+        - name: "PAPERLESS_API_TOKEN"
+          value: "{{ paperless.api_token }}"
+  volumes:
+    - name: paperless-ai-data
+      hostPath:
+        path: /opt/paperless-ai/data

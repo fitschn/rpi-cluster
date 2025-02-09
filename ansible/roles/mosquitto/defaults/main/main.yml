@@ -1,6 +1,6 @@
 mosquitto_version: 2.0.20
 
-mqtt_salt: "{{ lookup('community.general.bitwarden_secrets_manager', 'e4e3f9f5-dcd1-4f25-80cb-b27a00d0fa48').value }}" 
+mqtt_salt: "{{ lookup('community.general.bitwarden_secrets_manager', 'e4e3f9f5-dcd1-4f25-80cb-b27a00d0fa48').value }}"
 
 mqtt_accounts:
   wallbox:

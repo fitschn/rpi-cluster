@@ -1,0 +1,14 @@
+{{ ansible_managed | comment }}
+[Unit]
+Description=Caddy autoupdate
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+Type=oneshot
+
+ExecStart=caddy upgrade
+ExecStartPost=systemctl restart caddy.service
+
+[Install]
+WantedBy=multi-user.target

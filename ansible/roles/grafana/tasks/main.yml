@@ -81,6 +81,20 @@
     solo: true
     api_token: "{{ cloudflare_api_token }}"
 
+- name: Ship caddy config
+  ansible.builtin.copy:
+    dest: "/etc/caddy/sites/{{ item.service }}"
+    content: |2
+      {{ item.from }}:443 {
+        reverse_proxy {{ item.to }}
+      }
+    owner: root
+    group: caddy
+    mode: "0640"
+  loop:
+    - { service: "grafana", from: "grafana.ohr-mit-n.net", to: ":3000" }
+  notify: Reload caddy
+
 # It has to be done manually
 # - name: Install grafana windrose plugin
 #   community.grafana.grafana_plugin:

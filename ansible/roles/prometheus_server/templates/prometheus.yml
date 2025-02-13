@@ -20,7 +20,7 @@ spec:
       args:
         - --config.file=/etc/prometheus/prometheus.yml
         - --log.level=info
-        - --web.listen-address={{ ansible_host }}:9090
+        - --web.listen-address=127.0.0.1:9090
         - --web.enable-admin-api
         - --web.enable-lifecycle
         - --agent

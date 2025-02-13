@@ -1,0 +1,6 @@
+paperless_ai_version: 2.6.2
+
+paperless:
+  ai_user: "{{ lookup('community.general.bitwarden_secrets_manager', '121a0146-0597-459c-9f57-b283012a5f76').value }}"
+  ai_pass: "{{ lookup('community.general.bitwarden_secrets_manager', 'dea1bb48-35e8-4257-b132-b283012a6dc2').value }}"
+  api_token: "{{ lookup('community.general.bitwarden_secrets_manager', 'e4961f37-a214-4007-b53b-b27c017753e0').value }}"

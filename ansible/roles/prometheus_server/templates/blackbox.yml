@@ -1,0 +1,55 @@
+- targets:
+    - 'paperless.ohr-mit-n.net'
+  labels:
+    __schema: 'https://'
+    __hostname: 'paperless.ohr-mit-n.net'
+    __path: '/'
+
+- targets:
+    - 'paperless-ai.ohr-mit-n.net'
+  labels:
+    __schema: 'https://'
+    __hostname: 'paperless-ai.ohr-mit-n.net'
+    __path: '/'
+
+- targets:
+    - 'grafana.ohr-mit-n.net'
+  labels:
+    __schema: 'https://'
+    __hostname: 'grafana.ohr-mit-n.net'
+    __path: '/'
+
+- targets:
+    - 'mimir.ohr-mit-n.net'
+  labels:
+    __schema: 'https://'
+    __hostname: 'mimir.ohr-mit-n.net'
+    __path: '/'
+
+- targets:
+    - 'prometheus.ohr-mit-n.net'
+  labels:
+    __schema: 'https://'
+    __hostname: 'prometheus.ohr-mit-n.net'
+    __path: '/'
+
+- targets:
+    - 'autodarts.ohr-mit-n.net'
+  labels:
+    __schema: 'https://'
+    __hostname: 'autodarts.ohr-mit-n.net'
+    __path: '/'
+
+- targets:
+    - 'unifi.ohr-mit-n.net'
+  labels:
+    __schema: 'https://'
+    __hostname: 'unifi.ohr-mit-n.net'
+    __path: '/'
+
+- targets:
+    - '10.20.30.132'
+  labels:
+    __schema: 'http://'
+    __hostname: 'tasmota'
+    __path: '/'

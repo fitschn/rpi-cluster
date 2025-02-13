@@ -1,0 +1,4 @@
+- name: Remove golang download
+  ansible.builtin.file:
+    path: /tmp/golang-{{ golang_version }}.tar.gz
+    state: absent

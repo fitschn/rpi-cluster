@@ -1,0 +1,5 @@
+{
+	acme_dns cloudflare {{ cloudflare_api_token }}
+}
+
+import sites/*

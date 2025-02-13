@@ -1,0 +1,6 @@
+---
+- name: Deploy paperless-ai
+  hosts: pi4-r01-s06
+  become: true
+  roles:
+    - paperless_ai

@@ -1,0 +1,12 @@
+- name: Wait for blackbox exporter
+  ansible.builtin.wait_for:
+    port: "9115"
+    delay: 10
+    timeout: 60
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Reload blackbox exporter config
+  ansible.builtin.uri:
+    url: http://localhost:9115/-/reload
+    method: POST
+  ignore_errors: "{{ ansible_check_mode }}"

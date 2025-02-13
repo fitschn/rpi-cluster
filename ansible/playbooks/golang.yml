@@ -1,0 +1,6 @@
+---
+- name: Deploy go
+  hosts: all
+  become: true
+  roles:
+    - golang

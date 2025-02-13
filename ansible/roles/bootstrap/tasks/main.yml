@@ -7,7 +7,7 @@
 - name: Disable swap file
   ansible.builtin.include_tasks: swap.yml
 
-- name: Install essential packages
+- name: Install essential apt packages
   ansible.builtin.apt:
     update_cache: true
     pkg:

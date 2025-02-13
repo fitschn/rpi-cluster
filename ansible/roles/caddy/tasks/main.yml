@@ -1,0 +1,101 @@
+- name: Install python3-debian
+  ansible.builtin.apt:
+    name: python3-debian
+
+- name: Add caddy repository
+  ansible.builtin.deb822_repository:
+    name: caddy
+    types: deb
+    uris: "https://dl.cloudsmith.io/public/caddy/stable/deb/debian"
+    suites: any-version
+    components: main
+    signed_by: "https://dl.cloudsmith.io/public/caddy/stable/gpg.key"
+  ignore_errors: "{{ ansible_check_mode }}"
+  register: caddy_repo
+
+- name: Add xcaddy repository
+  ansible.builtin.deb822_repository:
+    name: xcaddy
+    types: deb
+    uris: "https://dl.cloudsmith.io/public/caddy/xcaddy/deb/debian"
+    suites: any-version
+    components: main
+    signed_by: "https://dl.cloudsmith.io/public/caddy/xcaddy/gpg.key"
+  ignore_errors: "{{ ansible_check_mode }}"
+  register: xcaddy_repo
+
+- name: Refresh apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  when: caddy_repo.changed or xcaddy_repo.changed # noqa: no-handler
+
+- name: Install package
+  ansible.builtin.apt:
+    name:
+      - caddy
+      - xcaddy
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Divert and rename caddy
+  community.general.dpkg_divert:
+    path: /usr/bin/caddy
+    divert: /usr/bin/caddy.default
+    rename: true
+
+- name: Create the caddy custom build with cloudflare support
+  ansible.builtin.shell:
+    cmd: xcaddy build --with github.com/caddy-dns/cloudflare --output /usr/bin/caddy.cloudflare
+    creates: /usr/bin/caddy.cloudflare
+    executable: /bin/bash
+  environment:
+    PATH: /usr/local/go/bin:{{ ansible_env.PATH }}
+
+- name: Make caddy custom build the default version
+  community.general.alternatives:
+    name: caddy
+    path: /usr/bin/caddy.cloudflare
+    link: /usr/bin/caddy
+    priority: 50
+    state: selected
+  ignore_errors: "{{ ansible_check_mode }}"
+  notify: Restart caddy
+
+- name: Allow fallback to default caddy build
+  community.general.alternatives:
+    name: caddy
+    path: /usr/bin/caddy.default
+    link: /usr/bin/caddy
+    priority: 10
+    state: present
+  ignore_errors: "{{ ansible_check_mode }}"
+  notify: Restart caddy
+
+- name: Create config directory for site configs
+  ansible.builtin.file:
+    path: /etc/caddy/sites
+    state: directory
+    mode: "0755"
+    owner: root
+    group: caddy
+
+- name: Ship caddy base config
+  ansible.builtin.template:
+    src: Caddyfile
+    dest: /etc/caddy/Caddyfile
+    mode: "0440"
+    owner: root
+    group: caddy
+  notify: Restart caddy
+  no_log: true
+
+- name: Deploy systemd services for autoupdate
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    mode: "0644"
+    owner: root
+    group: root
+  notify: Enable systemd services
+  loop:
+    - caddy-autoupdate.service
+    - caddy-autoupdate.timer

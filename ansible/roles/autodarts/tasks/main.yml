@@ -12,3 +12,17 @@
     value: "{{ ansible_host }}"
     solo: true
     api_token: "{{ cloudflare_api_token }}"
+
+- name: Ship caddy config
+  ansible.builtin.copy:
+    dest: "/etc/caddy/sites/{{ item.service }}"
+    content: |2
+      {{ item.from }}:443 {
+        reverse_proxy {{ item.to }}
+      }
+    owner: root
+    group: caddy
+    mode: "0640"
+  loop:
+    - { service: "autodarts", from: "autodarts.ohr-mit-n.net", to: ":3180" }
+  notify: Reload caddy

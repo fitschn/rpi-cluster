@@ -1,0 +1,25 @@
+- name: Blackbox config directory exists
+  ansible.builtin.file:
+    path: "/etc/blackbox_exporter"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Blackbox config file is deployed
+  ansible.builtin.copy:
+    src: blackbox.yml
+    dest: "/etc/blackbox_exporter/blackbox.yml"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Reload blackbox exporter config
+
+- name: Blackbox exporter container is deployed
+  ansible.builtin.template:
+    src: blackbox-exporter.yml
+    dest: "/opt/kubelet/manifests/blackbox-exporter.yml"
+    mode: "0640"
+    owner: root
+    group: root
+  notify: Wait for blackbox exporter

@@ -3,7 +3,7 @@ global:
   scrape_interval: 30s
 
 remote_write:
-  - url: http://mimir.ohr-mit-n.net:9009/api/v1/push
+  - url: https://mimir.ohr-mit-n.net/api/v1/push
 
 storage:
   tsdb:
@@ -19,7 +19,7 @@ scrape_configs:
   - job_name: 'prometheus'
     static_configs:
     - targets:
-       - {{ ansible_host }}:9090
+       - 127.0.0.1:9090
 
   - job_name: 'node-exporter'
     static_configs:
@@ -43,7 +43,28 @@ scrape_configs:
     - targets:
        - mqtt.ohr-mit-n.net:9000
 
-#  - job_name: 'alertmanager'
-#    static_configs:
-#    - targets:
-#       - {{ inventory_hostname_short }}:9093
+  - job_name: 'http_ping'
+    scrape_interval: 120s
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    file_sd_configs:
+      - files:
+        - blackbox.yml
+    relabel_configs:
+      - source_labels:
+          - __schema
+          - __address__
+          - __path
+        separator: ''
+        target_label: __param_target
+      - source_labels: [__hostname]
+        target_label: __param_hostname
+      - source_labels: [__hostname]
+        target_label: service
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 127.0.0.1:9115
+      - target_label: blackbox_instance
+        replacement: {{ inventory_hostname }}

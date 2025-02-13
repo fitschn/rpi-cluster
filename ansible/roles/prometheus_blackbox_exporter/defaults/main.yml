@@ -1,0 +1,2 @@
+blackbox_version: 'v0.25.0'
+blackbox_image: "prom/blackbox-exporter:{{ blackbox_version }}"

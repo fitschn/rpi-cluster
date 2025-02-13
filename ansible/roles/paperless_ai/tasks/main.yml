@@ -1,3 +1,4 @@
+# This is required to get the UID and GID for the container manifest
 - name: Create user for paperless
   ansible.builtin.user:
     name: "paperless"
@@ -5,7 +6,7 @@
     system: true
   register: paperless_user
 
-- name: Create directories for paperless
+- name: Create directories for paperless-ai
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -13,15 +14,13 @@
     owner: paperless
     group: paperless
   loop:
-    - /opt/paperless/data
-    - /opt/paperless/media
-    - /opt/paperless/export
-    - /opt/paperless/consume
+    - /opt/paperless-ai
+    - /opt/paperless-ai/data
 
 - name: Deploy container manifest
   ansible.builtin.template:
-    src: paperless.yml
-    dest: /opt/kubelet/manifests/paperless.yml
+    src: paperless-ai.yml
+    dest: /opt/kubelet/manifests/paperless-ai.yml
     owner: root
     group: root
     mode: "0440"
@@ -29,9 +28,9 @@
 
 - name: Wait for container to come up
   ansible.builtin.command:
-    cmd: crictl ps -q --name "^paperless$"
-  register: paperless_container
-  until: paperless_container.stdout != ""
+    cmd: crictl ps -q --name "^paperless-ai$"
+  register: paperless_ai_container
+  until: paperless_ai_container.stdout != ""
   delay: 10
   retries: 100
   changed_when: false
@@ -40,14 +39,11 @@
 - name: Create/update dns entry
   community.general.cloudflare_dns:
     zone: ohr-mit-n.net
-    record: paperless
+    record: paperless-ai
     type: A
     value: "{{ ansible_host }}"
     solo: true
     api_token: "{{ cloudflare_api_token }}"
-
-- name: Deploy HP scan target
-  ansible.builtin.include_tasks: hp-to-scan.yml
 
 - name: Ship caddy config
   ansible.builtin.copy:
@@ -60,5 +56,5 @@
     group: caddy
     mode: "0640"
   loop:
-    - { service: "paperless", from: "paperless.ohr-mit-n.net", to: ":8000" }
+    - { service: "paperless-ai", from: "paperless-ai.ohr-mit-n.net", to: ":3000" }
   notify: Reload caddy

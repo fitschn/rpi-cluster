@@ -1,0 +1,6 @@
+---
+- name: Install caddy
+  hosts: all
+  become: true
+  roles:
+    - caddy

@@ -1,0 +1,13 @@
+- name: Restart caddy
+  ansible.builtin.systemd:
+    name: caddy
+    state: restarted
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Enable systemd services
+  ansible.builtin.systemd:
+    name: caddy-autoupdate.timer
+    enabled: true
+    state: started
+    daemon_reload: true
+  ignore_errors: "{{ ansible_check_mode }}"

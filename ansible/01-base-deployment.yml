@@ -1,0 +1,14 @@
+- name: Bootstrapping
+  import_playbook: playbooks/bootstrap.yml
+- name: Deploy containerd
+  import_playbook: playbooks/containerd.yml
+- name: Deploy kubelet
+  import_playbook: playbooks/kubelet.yml
+- name: Deploy restic
+  import_playbook: playbooks/restic.yml
+- name: Deploy goland
+  import_playbook: playbooks/golang.yml
+- name: Deploy caddy
+  import_playbook: playbooks/caddy.yml
+- name: Deploy node exporter
+  import_playbook: playbooks/prometheus_node_exporter.yml

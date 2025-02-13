@@ -1,0 +1,32 @@
+{{ ansible_managed | comment }}
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: blackbox-exporter
+  labels:
+    app.kubernetes.io/name: blackbox-exporter
+    app.kubernetes.io/version: {{ blackbox_version }}
+spec:
+  hostNetwork: true
+  volumes:
+    - name: config
+      hostPath:
+        path: /etc/blackbox_exporter
+        type: Directory
+  containers:
+    - name: blackbox-exporter
+      image: {{ blackbox_image }}
+      args:
+        - --config.file=/config/blackbox.yml
+      volumeMounts:
+        - name: config
+          mountPath: /config
+      securityContext:
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+          add:
+            - NET_RAW

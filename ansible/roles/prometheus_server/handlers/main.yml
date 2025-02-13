@@ -4,3 +4,8 @@
   args:
     executable: /bin/bash
   changed_when: true
+
+- name: Reload caddy
+  ansible.builtin.systemd:
+    name: caddy
+    state: reloaded

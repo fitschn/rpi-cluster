@@ -53,7 +53,7 @@ compactor:
 ruler:
   evaluation_interval: 1m
   poll_interval: 1m
-  alertmanager_url: http://mimir.ohr-mit-n.net:9009/alertmanager
+  alertmanager_url: https://mimir.ohr-mit-n.net/alertmanager
 
 ruler_storage:
   backend: local
@@ -61,7 +61,7 @@ ruler_storage:
     directory: /data/rules
 
 alertmanager:
-  external_url: http://mimir.ohr-mit-n.net:9009/alertmanager
+  external_url: https://mimir.ohr-mit-n.net/alertmanager
   fallback_config_file: /etc/mimir/alertmanager.yml
 
 alertmanager_storage:

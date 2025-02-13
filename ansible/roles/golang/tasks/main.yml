@@ -1,0 +1,44 @@
+- name: Check golang version
+  ansible.builtin.command:
+    cmd: /usr/local/go/bin/go version
+  register: golang_version_deployed
+  changed_when: false
+  ignore_errors: true
+  check_mode: false # Check always the version, to make sure the variable is created
+
+- name: Download golang
+  ansible.builtin.get_url:
+    url: "{{ golang_dl_url }}"
+    dest: "/tmp/golang-{{ golang_version }}.tar.gz"
+    checksum: "{{ golang_sha256 }}"
+    mode: "0444"
+  register: golang_download_task
+  notify: Remove golang download
+  when: >
+    golang_version_deployed.failed or
+    not ("go" + golang_version + " ") in golang_version_deployed.stdout
+
+- name: Remove old golang deployment
+  ansible.builtin.file:
+    path: /usr/local/go
+    state: absent
+  when: golang_download_task.changed # noqa: no-handler
+  no_log: true
+
+- name: Unpack golang
+  ansible.builtin.unarchive:
+    dest: /usr/local
+    src: "/tmp/golang-{{ golang_version }}.tar.gz"
+    owner: root
+    group: root
+    remote_src: true
+  when: golang_download_task.changed # noqa: no-handler
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Add golang to PATH
+  ansible.builtin.copy:
+    dest: /etc/profile.d/golang.sh
+    content: "export PATH=$PATH:/usr/local/go/bin"
+    mode: "0644"
+    owner: root
+    group: root

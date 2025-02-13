@@ -1,25 +1,21 @@
 groups:
-- name: http_checks
-  rules:
-  - alert: BadHttpStatusCode
-    annotations:
-      message: We received an unexpected status code (!2xx) for {{ $labels.instance }}
-    expr: |
-      probe_http_status_code{service!="autodarts.ohr-mit-n.net"} < 200 or
-      probe_http_status_code{service!="autodarts.ohr-mit-n.net"} > 499
-    for: 20m
-    labels:
-      severity: warning
-      send_to_sre: yes
-      send_to_team: yes
-- name: certs
-  rules:
-  - alert: SslCertExpiresSoon
-    annotations:
-      message: SSL cert for {{ $labels.instance }} will expire soon
-    expr: ((probe_ssl_earliest_cert_expiry{} - time() ) / 86400) < 21
-    for: 5m
-    labels:
-      severity: warning
-      send_to_sre: yes
-      send_to_team: no
+  - name: http_checks
+    rules:
+      - alert: BadHttpStatusCode
+        annotations:
+          message: We received an unexpected status code (!2xx) for {{ $labels.instance }}
+        expr: |
+          probe_http_status_code{service!="autodarts.ohr-mit-n.net"} < 200 or
+          probe_http_status_code{service!="autodarts.ohr-mit-n.net"} > 499
+        for: 20m
+        labels:
+          severity: warning
+  - name: certs
+    rules:
+      - alert: SslCertExpiresSoon
+        annotations:
+          message: SSL cert for {{ $labels.instance }} will expire soon
+        expr: ((probe_ssl_earliest_cert_expiry{} - time() ) / 86400) < 21
+        for: 5m
+        labels:
+          severity: warning

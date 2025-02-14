@@ -10,13 +10,15 @@ jobs:
 
       - uses: actions/setup-python@v3
         with:
-          python-version: '3.10'
+          python-version: '3.13'
+
+      - name: install pipenv
+        run: pip3 install pipenv
 
       - name: install requirements
-        run: pip3 install -r ansible/requirements.txt
+        working-directory: ./ansible
+        run: pipenv install
 
-      - name: generate an empty vault password file
-        run: echo "not-a-password" > ansible/.vault.passwd
-
-      - name: Run ansible-lint
-        run: cd ansible && ansible-lint -vv
+      - name: run ansible-lint
+        working-directory: ./ansible
+        run: pipenv run ansible-lint -vv

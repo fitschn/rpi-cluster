@@ -12,10 +12,13 @@ jobs:
         with:
           python-version: '3.13'
 
+      - name: install pipenv
+        run: pip3 install pipenv
+
       - name: install requirements
         working-directory: ./ansible
         run: pipenv install
 
-      - name: Run ansible-lint
+      - name: run ansible-lint
         working-directory: ./ansible
         run: pipenv run ansible-lint -vv

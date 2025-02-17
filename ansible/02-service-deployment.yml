@@ -12,6 +12,8 @@
   import_playbook: playbooks/paperless_ngx.yml
 - name: Deploy paperless-ai
   import_playbook: playbooks/paperless_ai.yml
+- name: Deploy private-gpt
+  import_playbook: playbooks/private_gpt.yml
 - name: Deploy mosquito MQTT server
   import_playbook: playbooks/mosquitto.yml
 - name: Deploy mqtt exporter

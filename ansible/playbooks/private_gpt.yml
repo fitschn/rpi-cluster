@@ -1,0 +1,6 @@
+---
+- name: Deploy private-gpt
+  hosts: pi4-r01-s06
+  become: true
+  roles:
+    - private_gpt

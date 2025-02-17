@@ -1,4 +1,4 @@
-paperless_ai_version: 2.6.2
+paperless_ai_version: 2.6.5
 
 paperless:
   ai_user: "{{ lookup('community.general.bitwarden_secrets_manager', '121a0146-0597-459c-9f57-b283012a5f76').value }}"

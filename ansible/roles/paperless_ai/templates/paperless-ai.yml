@@ -14,8 +14,6 @@ spec:
         - mountPath: /app/data
           name: paperless-ai-data
       env:
-        - name: "PAPERLESS_AI_INITIAL_SETUP"
-          value: "no"
         - name: "PUID"
           value: "{{ paperless_user.uid | default(1100) }}"
         - name: "PGID"
@@ -27,13 +25,13 @@ spec:
         - name: "PAPERLESS_USERNAME"
           value: "{{ paperless.ai_user }}"
         - name: "CONTENT_MAX_LENGTH"
-          value: "9256"
+          value: "4096"
         - name: "AI_PROVIDER"
           value: "ollama"
         - name: "OLLAMA_API_URL"
           value: "https://ollama.ohr-mit-n.net"
         - name: "OLLAMA_MODEL"
-          value: "phi4:14b"
+          value: "llama3.1:8b"
   volumes:
     - name: paperless-ai-data
       hostPath:

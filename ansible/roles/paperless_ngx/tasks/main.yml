@@ -17,6 +17,24 @@
     - /opt/paperless/media
     - /opt/paperless/export
     - /opt/paperless/consume
+    - /opt/paperless/scripts
+
+- name: Ship pushover credentials
+  ansible.builtin.template:
+    src: pushover.credentials
+    dest: /opt/paperless/scripts/pushover.credentials
+    mode: "0400"
+    owner: paperless
+    group: root
+  no_log: true
+
+- name: Ship post-process script
+  ansible.builtin.copy:
+    src: post-process.sh
+    dest: /opt/paperless/scripts/post-process.sh
+    mode: "0750"
+    owner: paperless
+    group: paperless
 
 - name: Deploy container manifest
   ansible.builtin.template:

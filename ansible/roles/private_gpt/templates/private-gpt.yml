@@ -1,0 +1,32 @@
+{{ ansible_managed | comment }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: private-gpt
+  labels:
+    role: private-gpt
+spec:
+  hostNetwork: true
+  containers:
+    - name: private-gpt
+      image: zylonai/private-gpt:{{ private_gpt_version }}
+      volumeMounts:
+        - mountPath: /home/worker/app/local_data
+          name: private-gpt-data
+      env:
+        - name: "PORT"
+          value: "8001"
+        - name: "PGPT_PROFILES"
+          value: "docker"
+        - name: "PGPT_MODE"
+          value: "ollama"
+        - name: "PGPT_EMBED_MODE"
+          value: "ollama"
+        - name: "PGPT_OLLAMA_API_BASE"
+          value: "https://ollama.ohr-mit-n.net"
+        - name: "PGPT_OLLAMA_EMBEDDING_API_BASE"
+          value: "https://ollama.ohr-mit-n.net"
+  volumes:
+    - name: private-gpt-data
+      hostPath:
+        path: /opt/private-gpt/data

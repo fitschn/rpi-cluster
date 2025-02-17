@@ -4,3 +4,5 @@ paperless:
   secret_key: "{{ lookup('community.general.bitwarden_secrets_manager', '626f34c6-680f-4009-a8dd-b27a00b01f62').value }}"
   admin_user: "{{ lookup('community.general.bitwarden_secrets_manager', '058c0aa7-988f-498f-8e23-b27a00b03b6b').value }}"
   admin_pass: "{{ lookup('community.general.bitwarden_secrets_manager', 'ad70225f-4946-4925-9696-b27a00b06649').value }}"
+  pushover_token: "{{ lookup('community.general.bitwarden_secrets_manager', 'caae3980-b0ee-4fb2-b5dc-b2860166470b').value }}"
+  pushover_user_key: "{{ lookup('community.general.bitwarden_secrets_manager', '71554829-a9f4-4873-b0b1-b27a00c185e6').value }}"

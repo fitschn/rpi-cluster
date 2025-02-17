@@ -19,6 +19,8 @@ spec:
           name: paperless-export
         - mountPath: /usr/src/paperless/consume
           name: paperless-consume
+        - mountPath: /usr/src/paperless/scripts
+          name: paperless-scripts
       env:
         - name: "PAPERLESS_REDIS"
           value: "redis://127.0.0.1:6379"
@@ -46,6 +48,8 @@ spec:
           value: "{{ paperless.admin_user }}"
         - name: "PAPERLESS_ADMIN_PASSWORD"
           value: "{{ paperless.admin_pass }}"
+        - name: "PAPERLESS_POST_CONSUME_SCRIPT"
+          value: "/usr/src/paperless/scripts/post-process.sh"
   volumes:
     - name: paperless-data
       hostPath:
@@ -59,3 +63,6 @@ spec:
     - name: paperless-consume
       hostPath:
         path: /opt/paperless/consume
+    - name: paperless-scripts
+      hostPath:
+        path: /opt/paperless/scripts

@@ -6,12 +6,13 @@ if [ -n "${DOCUMENT_ARCHIVE_PATH}" ]; then
     echo "Sende Dokument an PrivateGPT ..."
 
     curl -s -X POST "https://pgpt.ohr-mit-n.net/v1/ingest/file" \
-        -H "Content-Type: multipart/form-data" -F file=@${DOCUMENT_ARCHIVE_PATH}
+        -H "Content-Type: multipart/form-data" -F "file=@${DOCUMENT_ARCHIVE_PATH}"
 
     echo -e "\nDokument ${DOCUMENT_FILE_NAME} wurde an PrivateGPT geschickt."
 
 else
-    source ${SCRIPT_DIR}/pushover.credentials
+    # shellcheck source=/dev/null
+    source "${SCRIPT_DIR}/pushover.credentials"
     echo "Dokument konnte nicht verarbeitet werden. Notification wird verschickt ..."
 
     curl -s --form-string "token=${APP_TOKEN}" --form-string "user=${USER_KEY}" \

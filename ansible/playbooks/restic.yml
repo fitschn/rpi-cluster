@@ -3,6 +3,7 @@
   hosts:
     - pi4-r01-s06
     - pi4-r01-s08
+    - htznr-01
   become: true
   roles:
     - restic

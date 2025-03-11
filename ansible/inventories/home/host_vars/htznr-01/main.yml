@@ -1,0 +1,3 @@
+deploy_nat64_hetzner: true
+restic_backup_dirs:
+  - /opt/mealie

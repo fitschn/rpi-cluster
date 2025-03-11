@@ -48,6 +48,13 @@
     __path: '/'
 
 - targets:
+    - 'mealie.ohr-mit-n.net'
+  labels:
+    __schema: 'https://'
+    __hostname: 'mealie.ohr-mit-n.net'
+    __path: '/'
+
+- targets:
     - '10.20.30.132'
   labels:
     __schema: 'http://'

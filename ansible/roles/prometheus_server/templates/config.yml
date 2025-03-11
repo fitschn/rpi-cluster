@@ -25,7 +25,9 @@ scrape_configs:
     static_configs:
     - targets:
 {% for host in groups['all']| sort %}
+{% if hostvars[host].ansible_host is ansible.utils.ipv4 %}
       - {{ hostvars[host].ansible_host }}:9100
+{% endif %}
 {% endfor %}
 
   - job_name: 'unifi-exporter'

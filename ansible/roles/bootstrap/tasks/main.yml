@@ -30,3 +30,13 @@
     ignore_spaces: true
     no_extra_spaces: true
   when: inventory_hostname == "pi5-autodarts"
+
+- name: Ship nat64 settings for hetzner VMs
+  ansible.builtin.template:
+    src: netplan.yml
+    dest: /etc/netplan/50-cloud-init.yaml
+    mode: "0600"
+    owner: root
+    group: root
+  notify: Apply netplan changes
+  when: deploy_nat64_hetzner

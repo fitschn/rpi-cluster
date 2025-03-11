@@ -1,0 +1,36 @@
+{{ ansible_managed | comment }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mealie
+  labels:
+    role: mealie
+spec:
+  hostNetwork: true
+  containers:
+    - name: mealie
+      image: ghcr.io/mealie-recipes/mealie:{{ mealie_version }}
+      volumeMounts:
+        - mountPath: /app/data
+          name: mealie-data
+      env:
+        - name: "API_PORT"
+          value: "9000"
+        - name: "PUID"
+          value: "{{ mealie_user.uid | default(1100) }}"
+        - name: "PGID"
+          value: "{{ mealie_user.group | default(1100) }}"
+        - name: "BASE_URL"
+          value: "https://mealie.ohr-mit-n.net"
+        - name: "TZ"
+          value: "UTC"
+        - name: "ALLOW_SIGNUP"
+          value: "false"
+        - name: "OPENAI_API_KEY"
+          value: "{{ mealie_openai_api_key }}"
+        - name: "OPENAI_API_MODEL"
+          value: "gpt-4o"
+  volumes:
+    - name: mealie-data
+      hostPath:
+        path: /opt/mealie/data

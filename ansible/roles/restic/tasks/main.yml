@@ -1,3 +1,8 @@
+- name: Install required apt packages for restic
+  ansible.builtin.apt:
+    pkg:
+      - bzip2
+
 - name: Create directories for restic
   ansible.builtin.file:
     name: "{{ item }}"

@@ -1,0 +1,58 @@
+- name: Create user for mealie
+  ansible.builtin.user:
+    name: "mealie"
+    home: "/opt/mealie"
+    system: true
+  register: mealie_user
+
+- name: Create directories for mealie
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0750'
+    owner: mealie
+    group: mealie
+  loop:
+    - /opt/mealie/data
+
+- name: Deploy container manifest
+  ansible.builtin.template:
+    src: mealie.yml
+    dest: /opt/kubelet/manifests/mealie.yml
+    owner: root
+    group: root
+    mode: "0440"
+  no_log: true
+
+- name: Wait for container to come up
+  ansible.builtin.command:
+    cmd: crictl ps -q --name "^mealie$"
+  register: mealie_container
+  until: mealie_container.stdout != ""
+  delay: 10
+  retries: 100
+  changed_when: false
+  when: not ansible_check_mode
+
+- name: Create/update dns entry
+  community.general.cloudflare_dns:
+    zone: ohr-mit-n.net
+    record: mealie
+    type: AAAA
+    value: "{{ ansible_host }}"
+    solo: true
+    api_token: "{{ cloudflare_api_token }}"
+
+- name: Ship caddy config
+  ansible.builtin.copy:
+    dest: "/etc/caddy/sites/{{ item.service }}"
+    content: |2
+      {{ item.from }}:443 {
+        reverse_proxy {{ item.to }}
+      }
+    owner: root
+    group: caddy
+    mode: "0640"
+  loop:
+    - { service: "mealie", from: "mealie.ohr-mit-n.net", to: ":9000" }
+  notify: Reload caddy

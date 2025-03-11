@@ -1,0 +1,19 @@
+network:
+  version: 2
+  ethernets:
+    eth0:
+      match:
+        macaddress: "{{ ansible_default_ipv6.macaddress }}"
+      addresses:
+      - "{{ ansible_host }}/64"
+      nameservers:
+        addresses:
+        - 2a00:1098:2b::1
+        - 2a00:1098:2c::1
+        - 2a01:4f8:c2c:123f::1
+      dhcp4: true
+      set-name: "eth0"
+      routes:
+      - on-link: true
+        to: "default"
+        via: "fe80::1"

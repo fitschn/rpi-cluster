@@ -1,0 +1,6 @@
+---
+- name: Deploy mealie
+  hosts: htznr-01
+  become: true
+  roles:
+    - mealie

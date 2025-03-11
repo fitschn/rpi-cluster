@@ -18,6 +18,8 @@ receivers:
       - send_resolved: true
         user_key: {{ alertmanager.pushover_user_key }}
         token: {{ alertmanager.pushover_token }}
+        retry: 2h
+        expire: 1h
   - name: 'heartbeat'
     webhook_configs:
       - url: 'https://hc-ping.com/{{ alertmanager.healthcheck_uuid }}'

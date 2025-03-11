@@ -1,4 +1,4 @@
-golang_version: 1.24.0
+golang_version: 1.24.1
 golang_dl_url: "https://go.dev/dl/go{{ golang_version }}.linux-{{ custom_arch }}.tar.gz"
 golang_sha256: >-
   sha256:{{ lookup('ansible.builtin.url', 'https://go.dev/dl/?mode=json', split_lines=false) | from_json |

@@ -1,0 +1,26 @@
+{{ ansible_managed | comment }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: open-webui
+  labels:
+    role: open-webui
+spec:
+  hostNetwork: true
+  containers:
+    - name: open-webui
+      image: ghcr.io/open-webui/open-webui:{{ open_webui_version }}
+      volumeMounts:
+        - mountPath: /app/backend/data
+          name: open-webui-data
+      env:
+        - name: "HOST"
+          value: "127.0.0.1"
+        - name: "PORT"
+          value: "8002"
+        - name: "OLLAMA_BASE_URL"
+          value: "https://ollama.ohr-mit-n.net"
+  volumes:
+    - name: open-webui-data
+      hostPath:
+        path: /opt/open-webui/data

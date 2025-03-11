@@ -1,0 +1,51 @@
+- name: Create directories for open-webui
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+  loop:
+    - /opt/open-webui/data
+
+- name: Deploy container manifest
+  ansible.builtin.template:
+    src: open-webui.yml
+    dest: /opt/kubelet/manifests/open-webui.yml
+    owner: root
+    group: root
+    mode: "0440"
+  no_log: true
+
+- name: Wait for container to come up
+  ansible.builtin.command:
+    cmd: crictl ps -q --name "^open-webui$"
+  register: open_webui_container
+  until: open_webui_container.stdout != ""
+  delay: 10
+  retries: 100
+  changed_when: false
+  when: not ansible_check_mode
+
+- name: Create/update dns entry
+  community.general.cloudflare_dns:
+    zone: ohr-mit-n.net
+    record: open-webui
+    type: A
+    value: "{{ ansible_host }}"
+    solo: true
+    api_token: "{{ cloudflare_api_token }}"
+
+- name: Ship caddy config
+  ansible.builtin.copy:
+    dest: "/etc/caddy/sites/{{ item.service }}"
+    content: |2
+      {{ item.from }}:443 {
+        reverse_proxy {{ item.to }}
+      }
+    owner: root
+    group: caddy
+    mode: "0640"
+  loop:
+    - { service: "open-webui", from: "open-webui.ohr-mit-n.net", to: ":8002" }
+  notify: Reload caddy
